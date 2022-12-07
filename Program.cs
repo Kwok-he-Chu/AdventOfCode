@@ -11,11 +11,11 @@ namespace AOC2022
             Console.WriteLine("==========");
             Console.WriteLine("Part One: ");
             Console.WriteLine("==========");
-            new U5().Execute1();
+            new U6().Execute1();
             Console.WriteLine("==========");
             Console.WriteLine("Part Two: ");
             Console.WriteLine("==========");
-            new U5().Execute2();
+            new U6().Execute2();
             Console.ReadKey();
 
         }
