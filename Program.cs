@@ -59,6 +59,13 @@ namespace AOC2022
             return result;
         }
 
+        public static bool IsWithinBounds(this int[,] array, int x, int y)
+        {
+            if (x < array.GetLowerBound(0) || x > array.GetUpperBound(0) || y < array.GetLowerBound(1) || y > array.GetUpperBound(1))
+                return false;
+            return true;
+        }
+
         public static bool IsUpper(this string inp)
         {
             foreach (char c in inp)
