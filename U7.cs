@@ -11,8 +11,6 @@ namespace AOC2022
         public void Execute1()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
-
-            //input = "$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
             DirectoryModel root = new DirectoryModel("/", null);
@@ -21,6 +19,22 @@ namespace AOC2022
             long result = directories
                 .Where(dir => dir.GetSize() <= 100000)
                 .Sum(dir => dir.GetSize());
+
+            Console.WriteLine(result);
+        }
+
+        public void Execute2()
+        {
+            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+
+            DirectoryModel root = new DirectoryModel("/", null);
+            List<DirectoryModel> directories = BuildTreeOfDirectories(split, root);
+            long freeSpace = 70000000 - root.GetSize();
+            long result = directories.Where(dir => dir.GetSize() > 30000000 - freeSpace)
+                .OrderBy(dir => dir.GetSize())
+                .FirstOrDefault()
+                .GetSize();
 
             Console.WriteLine(result);
         }
@@ -63,7 +77,7 @@ namespace AOC2022
                                 string[] lsCommand = split[j].Split(' ');
                                 string arg1 = lsCommand[0];
                                 string arg2 = lsCommand[1];
-                                
+
                                 if (arg1 == "$")
                                 {
                                     i = j - 1;
@@ -87,22 +101,6 @@ namespace AOC2022
                 }
             }
             return result;
-        }
-
-        public void Execute2()
-        {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
-            string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-
-            DirectoryModel root = new DirectoryModel("/", null);
-            List<DirectoryModel> directories = BuildTreeOfDirectories(split, root);
-            long freeSpace = 70000000 - root.GetSize();
-            long result = directories.Where(dir => dir.GetSize() > 30000000 - freeSpace)
-                .OrderBy(dir => dir.GetSize())
-                .FirstOrDefault()
-                .GetSize();
-
-            Console.WriteLine(result);
         }
 
         private DirectoryModel FindDirectoryByName(DirectoryModel current, string name)
