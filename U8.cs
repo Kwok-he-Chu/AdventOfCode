@@ -101,7 +101,6 @@ namespace AOC2022
         public void Execute2()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
-            //input = "30373\r\n25512\r\n65332\r\n33549\r\n35390";
             int[,] array = input.ConvertToIntArray();
             int[,] scenicScoreArray = new int[array.GetLength(0), array.GetLength(1)];
 
@@ -125,10 +124,22 @@ namespace AOC2022
 
         private void SaveScenicScore(int[,] array, ref int[,] scenicScoreArray, int x, int y)
         {
-            var up = Enumerable.Range(1, 5).Select(nr => (x, y - nr)).ToList();
-            var left = Enumerable.Range(1, 5).Select(nr => (x - nr, y)).ToList();
-            var right = Enumerable.Range(1, 5).Select(nr => (x + nr, y)).ToList();
-            var down = Enumerable.Range(1, 5).Select(nr => (x, y + nr)).ToList();
+            var up = Enumerable.Range(1, array.GetLength(1))
+                .Select(nr => (X: x, Y: y - nr))
+                .Where(tuple => array.IsWithinBounds(tuple.X, tuple.Y))
+                .ToList();
+            var left = Enumerable.Range(1, array.GetLength(0))
+                .Select(nr => (X: x - nr, Y: y))
+                .Where(tuple => array.IsWithinBounds(tuple.X, tuple.Y))
+                .ToList();
+            var right = Enumerable.Range(1, array.GetLength(0))
+                .Select(nr => (X: x + nr, Y: y))
+                .Where(tuple => array.IsWithinBounds(tuple.X, tuple.Y))
+                .ToList();
+            var down = Enumerable.Range(1, array.GetLength(1))
+                .Select(nr => (X: x, Y: y + nr))
+                .Where(tuple => array.IsWithinBounds(tuple.X, tuple.Y))
+                .ToList();
 
             int scenicScoreUp = GetScenicScore(up, array, x, y);
             int scenicScoreLeft = GetScenicScore(left, array, x, y);
@@ -141,20 +152,11 @@ namespace AOC2022
         private int GetScenicScore(List<(int, int)> listOfCoordinates, int[,] array, int x, int y)
         {
             int scenicScore = 0;
-            int lastHeight = array[x, y];
             foreach ((int i, int j) in listOfCoordinates)
             {
-                if (!array.IsWithinBounds(i, j))
-                {
-                    return scenicScore;
-                }
-
                 scenicScore++;
-                lastHeight = Math.Max(array[x, y], array[i, j]);
-                if (lastHeight <= array[i, j])
-                {
+                if (array[x, y] <= array[i, j])
                     return scenicScore;
-                }
             }
             return scenicScore;
         }
