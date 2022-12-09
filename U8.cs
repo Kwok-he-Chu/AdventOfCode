@@ -12,7 +12,7 @@ namespace AOC2022
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
             int[,] inputArray = input.ConvertToIntArray();
-            bool[,] visbilityArray = new bool[inputArray.GetLength(0), inputArray.GetLength(1)];;
+            bool[,] visbilityArray = new bool[inputArray.GetLength(0), inputArray.GetLength(1)];
 
             // Brute force.
             MarkVisibleTopToDown(inputArray, visbilityArray);

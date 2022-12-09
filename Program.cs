@@ -11,11 +11,11 @@ namespace AOC2022
             Console.WriteLine("==========");
             Console.WriteLine("Part One: ");
             Console.WriteLine("==========");
-            new U8().Execute1();
+            new U9().Execute1();
             Console.WriteLine("==========");
             Console.WriteLine("Part Two: ");
             Console.WriteLine("==========");
-            new U8().Execute2();
+            new U9().Execute2();
             Console.ReadKey();
         }
     }
@@ -31,10 +31,9 @@ namespace AOC2022
         {
             int rowLength = array.GetLength(0);
             int columnLength = array.GetLength(1);
-
-            for (int i = 0; i < rowLength; i++)
+            for (int j = 0; j < columnLength; j++)
             {
-                for (int j = 0; j < columnLength; j++)
+                for (int i = 0; i < rowLength; i++)
                 {
                     Console.Write(array[i, j]);
                 }
