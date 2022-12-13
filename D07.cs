@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AOC2022
 {
-    public class U7
+    public class D07
     {
         private readonly AocHttpClient _client = new AocHttpClient(7);
 

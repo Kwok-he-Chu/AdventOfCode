@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AOC2022
 {
-    public class U11
+    public class D11
     {
         private readonly AocHttpClient _client = new AocHttpClient(11);
 
@@ -126,8 +126,6 @@ namespace AOC2022
 
     public class MonkeyModel
     {
-        private readonly bool _isDebug = false;
-
         public int MonkeyId { get; set; }
         public Queue<long> Items { get; set; }
         public Func<long, long, long> Func { get; set; }
@@ -151,8 +149,6 @@ namespace AOC2022
             while (Items.Count > 0)
             {
                 long item = Items.Dequeue();
-                if (_isDebug)
-                    Console.ReadKey();
 
                 long oldItemValue = Func.Invoke(item, OperationNumber);
                 Program.WriteLine("worry level: " + item);

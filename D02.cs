@@ -2,7 +2,7 @@
 
 namespace AOC2022
 {
-    public class U2
+    public class D02
     {
         private readonly AocHttpClient _client = new AocHttpClient(2);
 

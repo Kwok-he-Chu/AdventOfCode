@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AOC2022
 {
-    public class U6
+    public class D06
     {
         private readonly AocHttpClient _client = new AocHttpClient(6);
 

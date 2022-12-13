@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace AOC2022
 {
-    public class U1
+    public class D01
     {
         private readonly AocHttpClient _client = new AocHttpClient(1);
 
         public void Execute1()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
-            var result = GetCaloriesPerLine(input);
+            var result = GetCaloriesPerLine(input).ToList();
 
             Console.WriteLine(result.Max());
         }
@@ -19,7 +19,7 @@ namespace AOC2022
         public void Execute2()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
-            var result = GetCaloriesPerLine(input);
+            var result = GetCaloriesPerLine(input).ToList();
 
             Console.WriteLine(result.OrderByDescending(x => x).Take(3).Sum());
         }
