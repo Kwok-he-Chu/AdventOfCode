@@ -7,14 +7,13 @@ namespace AOC2022
     public class D12
     {
         private readonly AocHttpClient _client = new AocHttpClient(12);
-
         private readonly List<(int X, int Y)> directions = new List<(int X, int Y)>() { (1, 0), (0, 1), (-1, 0), (0, -1) };
 
-        private bool[,] visibilityArray;
-
         private (int X, int Y) StartNodePosition;
-
         private (int X, int Y) EndNodePosition;
+
+        // For visualization purposes in <see cref="GetSteps(HeightModel)"/>.
+        private bool[,] visibilityArray;
 
         public void Execute1()
         {
@@ -95,19 +94,19 @@ namespace AOC2022
 
             while (queue.Count > 0)
             {
-                var current = queue.Dequeue();
+                HeightModel current = queue.Dequeue();
 
                 if (current.IsSeen)
                     continue;
 
                 current.IsSeen = true;
 
-                foreach (var dir in directions)
+                foreach (var direction in directions)
                 {
-                    if (!heightModels.IsWithinBounds(current.X + dir.X, current.Y + dir.Y))
+                    if (!heightModels.IsWithinBounds(current.X + direction.X, current.Y + direction.Y))
                         continue;
 
-                    var neighbour = heightModels[current.X + dir.X, current.Y + dir.Y];
+                    HeightModel neighbour = heightModels[current.X + direction.X, current.Y + direction.Y];
 
                     if (neighbour.IsSeen)
                         continue;
