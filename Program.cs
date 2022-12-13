@@ -74,11 +74,6 @@ namespace AOC2022
             return result;
         }
 
-        public static bool IsWithinBounds(this int[,] array, int x, int y)
-        {
-            return x >= array.GetLowerBound(0) && x <= array.GetUpperBound(0) && y >= array.GetLowerBound(1) && y <= array.GetUpperBound(1);
-        }
-
         public static void PrintArray(this char[,] array)
         {
             int rowLength = array.GetLength(0);
@@ -101,10 +96,9 @@ namespace AOC2022
             return result;
         }
 
-        public static bool IsWithinBounds(this char[,] array, int x, int y)
+        public static bool IsWithinBounds<T>(this T[,] array, int x, int y)
         {
             return x >= array.GetLowerBound(0) && x <= array.GetUpperBound(0) && y >= array.GetLowerBound(1) && y <= array.GetUpperBound(1);
         }
-
     }
 }
