@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace AOC2022
 {
     class Program
     {
+        public static bool IsDebug = false;
+
         static void Main(string[] args)
         {
             Console.WriteLine("==========");
@@ -17,6 +20,14 @@ namespace AOC2022
             Console.WriteLine("==========");
             new U11().Execute2();
             Console.ReadKey();
+        }
+
+        public static void WriteLine(string line)
+        {
+            if (IsDebug)
+            {
+                Console.WriteLine(line);
+            }
         }
     }
 
