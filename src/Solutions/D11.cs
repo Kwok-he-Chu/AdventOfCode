@@ -5,13 +5,16 @@ using System.Text;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 11: Monkey in the Middle
+    /// </summary>
     public class D11
     {
         private readonly AocHttpClient _client = new AocHttpClient(11);
 
-        public static Func<long, long, long> _funcMultiply => (x, y) => x * y;
-        public static Func<long, long, long> _funcPower => (x, _) => x * x;
-        public static Func<long, long, long> _funcPlus => (x, y) => x + y;
+        private static Func<long, long, long> _funcMultiply => (x, y) => x * y;
+        private static Func<long, long, long> _funcPower => (x, _) => x * x;
+        private static Func<long, long, long> _funcPlus => (x, y) => x + y;
 
         public void Execute1()
         {
@@ -37,10 +40,10 @@ namespace AOC2022
             {
                 if (split[i].StartsWith("Monkey"))
                 {
-                    var operationTuple = ParseOperationFunction(split[i + 2]);
+                    (long Number, Func<long, long, long> Func) operationTuple = ParseOperationFunction(split[i + 2]);
                     List<long> items = split[i + 1].Replace("Starting items:", string.Empty).Split(',').Select(long.Parse).ToList();
                     Queue<long> queue = new Queue<long>();
-                    foreach (var item in items)
+                    foreach (long item in items)
                     {
                         queue.Enqueue(item);
                     }
@@ -144,15 +147,15 @@ namespace AOC2022
 
         public void InspectItems(bool part2 = false, long leastCommonMultiple = 0)
         {
-            Program.WriteLine($"_____\nMonkey {MonkeyId}");
+            Extensions.WriteLine($"_____\nMonkey {MonkeyId}");
 
             while (Items.Count > 0)
             {
                 long item = Items.Dequeue();
 
                 long oldItemValue = Func.Invoke(item, OperationNumber);
-                Program.WriteLine("worry level: " + item);
-                Program.WriteLine("multiplied level: " + oldItemValue);
+                Extensions.WriteLine("worry level: " + item);
+                Extensions.WriteLine("multiplied level: " + oldItemValue);
 
                 long newItemValue;
 
@@ -162,16 +165,16 @@ namespace AOC2022
                     newItemValue = oldItemValue / 3;
 
                 bool isDivisibleBy = TestDivisibleby(newItemValue);
-                Program.WriteLine(isDivisibleBy.ToString());
+                Extensions.WriteLine(isDivisibleBy.ToString());
                 if (isDivisibleBy)
                 {
                     TrueMonkey.Items.Enqueue(newItemValue);
-                    Program.WriteLine($"Pass to {IfTrueMonkeyId}  | {newItemValue}");
+                    Extensions.WriteLine($"Pass to {IfTrueMonkeyId}  | {newItemValue}");
                 }
                 else
                 {
                     FalseMonkey.Items.Enqueue(newItemValue);
-                    Program.WriteLine($"Pass to {IfFalseMonkeyId} | {newItemValue}");
+                    Extensions.WriteLine($"Pass to {IfFalseMonkeyId} | {newItemValue}");
                 }
                 NumberOfInspections++;
             }
@@ -184,11 +187,9 @@ namespace AOC2022
 
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            foreach (var item in Items)
-            {
+            StringBuilder sb = new StringBuilder();
+            foreach (long item in Items)
                 sb.Append($"{item}, ");
-            }
             return $"{MonkeyId} :{DivisionNumber} o{OperationNumber} #{NumberOfInspections} - {sb}";
         }
     }

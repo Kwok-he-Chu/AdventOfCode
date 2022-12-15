@@ -4,32 +4,16 @@ using System.Linq;
 
 namespace AOC2022
 {
-    class Program
+    public static class Extensions
     {
-        public static bool IsDebug = false;
-
-        static void Main(string[] args)
-        {
-            Console.WriteLine("==========");
-            Console.WriteLine("Part One: ");
-            Console.WriteLine("==========");
-            new D13().Execute1();
-            Console.WriteLine("==========");
-            Console.WriteLine("Part Two: ");
-            Console.WriteLine("==========");
-            new D13().Execute2();
-            Console.ReadKey();
-        }
+        public static bool IsDebug;
 
         public static void WriteLine(string line)
         {
             if (IsDebug)
                 Console.WriteLine(line);
         }
-    }
 
-    public static class Extensions
-    {
         public static List<string> ConvertToList(this string input)
         {
             return input.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -108,6 +92,5 @@ namespace AOC2022
             list[indexB] = temp;
             return list;
         }
-
     }
 }

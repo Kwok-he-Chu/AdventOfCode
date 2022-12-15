@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 3: Rucksack Reorganization
+    /// </summary>
     public class D03
     {
         private readonly AocHttpClient _client = new AocHttpClient(3);
@@ -10,7 +13,8 @@ namespace AOC2022
         public void Execute1()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
-            var split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+            //input = "vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw";
+            string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
             int sum = 0;
 
@@ -48,8 +52,9 @@ namespace AOC2022
         public void Execute2()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
-            var split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-            var result = split
+            //input = "vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw";
+            string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+            int result = split
                 .Chunk(3)
                 .Select(line => (First: line[0], Second: line[1], Third: line[2]))
                 .Select(line => line.First.Intersect(line.Second).Intersect(line.Third)

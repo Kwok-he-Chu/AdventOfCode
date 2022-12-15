@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 12: Hill Climbing Algorithm
+    /// </summary>
     public class D12
     {
         private readonly AocHttpClient _client = new AocHttpClient(12);
@@ -58,12 +61,12 @@ namespace AOC2022
 
         private HeightModel[,] GetHeightModels(char[,] array)
         {
-            var result = new HeightModel[array.GetLength(0), array.GetLength(1)];
+            HeightModel[,] result = new HeightModel[array.GetLength(0), array.GetLength(1)];
             for (int j = 0; j < array.GetLength(1); j++)
             {
                 for (int i = 0; i < array.GetLength(0); i++)
                 {
-                    var heightModel = new HeightModel()
+                    HeightModel heightModel = new HeightModel()
                     {
                         Elevation = array[i, j],
                         X = i,
@@ -101,7 +104,7 @@ namespace AOC2022
 
                 current.IsSeen = true;
 
-                foreach (var direction in directions)
+                foreach ((int X, int Y) direction in directions)
                 {
                     if (!heightModels.IsWithinBounds(current.X + direction.X, current.Y + direction.Y))
                         continue;
@@ -116,9 +119,8 @@ namespace AOC2022
                         neighbour.Parent = current;
 
                         if (neighbour == end)
-                        {
                             return end;
-                        }
+
                         queue.Enqueue(neighbour);
                     }
                 }
@@ -138,7 +140,7 @@ namespace AOC2022
 
             List<HeightModel> startPositions = FindAllStartingNodes(heightModels);
             List<int> list = new List<int>();
-            foreach (var pos in startPositions)
+            foreach (HeightModel pos in startPositions)
             {
                 HeightModel result = BFS(heightModels, pos, endNode);
                 if (result == null)
@@ -154,17 +156,11 @@ namespace AOC2022
 
         private List<HeightModel> FindAllStartingNodes(HeightModel[,] array)
         {
-            var result = new List<HeightModel>();
+            List<HeightModel> result = new List<HeightModel>();
             for (int j = 0; j < array.GetLength(1); j++)
-            {
                 for (int i = 0; i < array.GetLength(0); i++)
-                {
                     if (array[i, j].Elevation == 'a')
-                    {
                         result.Add(array[i, j]);
-                    }
-                }
-            }
             return result;
         }
     }

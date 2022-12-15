@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 6: Tuning Trouble
+    /// </summary>
     public class D06
     {
         private readonly AocHttpClient _client = new AocHttpClient(6);
@@ -10,6 +13,11 @@ namespace AOC2022
         public void Execute1()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            //input = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
+            //input = "bvwbjplbgvbhsrlpgdmjqwftvncz";
+            //input = "nppdvjthqldpwncqszvftbrmjlhg";
+            //input = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg";
+            //input = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
             string datastream = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)[0];
             Console.WriteLine(GetMarkerIndex(datastream, 4));
         }
@@ -17,6 +25,11 @@ namespace AOC2022
         public void Execute2()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            //input = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
+            //input = "bvwbjplbgvbhsrlpgdmjqwftvncz";
+            //input = "nppdvjthqldpwncqszvftbrmjlhg";
+            //input = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg";
+            //input = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
             string datastream = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)[0];
             Console.WriteLine(GetMarkerIndex(datastream, 14));
         }
@@ -25,7 +38,7 @@ namespace AOC2022
         {
             for (int i = 0; i < datastream.Length - numberOfDistinctCharacters; i++)
             {
-                var hashSet = new HashSet<char>();
+                HashSet<char> hashSet = new HashSet<char>();
                 for (int j = 0; j < numberOfDistinctCharacters; j++)
                 {
                     hashSet.Add(datastream[i + j]);

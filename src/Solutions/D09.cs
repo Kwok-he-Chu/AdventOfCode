@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 9: Rope Bridge
+    /// </summary>
     public class D09
     {
         private readonly AocHttpClient _client = new AocHttpClient(9);

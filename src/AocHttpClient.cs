@@ -9,21 +9,26 @@ namespace AOC2022
     {
         private static readonly HttpClient _httpClient = new HttpClient();
         private readonly string _sessionToken;
-        private readonly int _number;
+        private readonly int _year = 2022;
+        private readonly int _day;
 
-        public AocHttpClient(int number)
+        public AocHttpClient(int day)
         {
-            _number = number;
+            _day = day;
             _sessionToken = Environment.GetEnvironmentVariable("AdventOfCodeSessionToken", EnvironmentVariableTarget.Machine) ?? throw new ArgumentNullException();
         }
 
         public async Task<string> RetrieveFile()
         {
-            string fileName = $"{_number}.txt";
-            if (File.Exists(fileName))
-                return File.ReadAllText(fileName);
+            string fileName = $"input_{_year}_{_day.ToString("D2")}.txt";
+            string path = $"../../../Input/";
+            
+            // If exists, read file from the folder "/{year}/Input/" after cd from root executable "/bin/Debug/net6.0/"
+            if (File.Exists(path + fileName))
+                return File.ReadAllText(path + fileName);
 
-            string url = $"https://adventofcode.com/2022/day/{_number}/input";
+            // Fetch from Advent of Code.
+            string url = $"https://adventofcode.com/{_year}/day/{_day}/input";
 
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
             message.Headers.Add("Cookie", $"session={_sessionToken}");
@@ -31,10 +36,11 @@ namespace AOC2022
             HttpResponseMessage response = await _httpClient.SendAsync(message);
             response.EnsureSuccessStatusCode();
 
+            // Save the file to "/{path}/{fileName}" so we don't have to fetch it again.
             string output = await response.Content.ReadAsStringAsync();
-            File.WriteAllLines(fileName, output.Split('\n'));
+            File.WriteAllLines(path + fileName, output.Split('\n'));
             
-            return File.ReadAllText(fileName);
+            return File.ReadAllText(path + fileName);
         }
     }
 }

@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 8: Treetop Tree House
+    /// </summary>
     public class D08
     {
         private readonly AocHttpClient _client = new AocHttpClient(8);
@@ -11,6 +14,7 @@ namespace AOC2022
         public void Execute1()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            //input = "30373\r\n25512\r\n65332\r\n33549\r\n35390";
             int[,] inputArray = input.ConvertToIntArray();
             bool[,] visbilityArray = new bool[inputArray.GetLength(0), inputArray.GetLength(1)];
 
@@ -101,6 +105,7 @@ namespace AOC2022
         public void Execute2()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            //input = "30373\r\n25512\r\n65332\r\n33549\r\n35390";
             int[,] array = input.ConvertToIntArray();
             int[,] scenicScoreArray = new int[array.GetLength(0), array.GetLength(1)];
 
@@ -124,19 +129,19 @@ namespace AOC2022
 
         private void SaveScenicScore(int[,] array, ref int[,] scenicScoreArray, int x, int y)
         {
-            var up = Enumerable.Range(1, array.GetLength(1))
+            List<(int X, int Y)> up = Enumerable.Range(1, array.GetLength(1))
                 .Select(nr => (X: x, Y: y - nr))
                 .Where(tuple => array.IsWithinBounds(tuple.X, tuple.Y))
                 .ToList();
-            var left = Enumerable.Range(1, array.GetLength(0))
+            List<(int X, int Y)> left = Enumerable.Range(1, array.GetLength(0))
                 .Select(nr => (X: x - nr, Y: y))
                 .Where(tuple => array.IsWithinBounds(tuple.X, tuple.Y))
                 .ToList();
-            var right = Enumerable.Range(1, array.GetLength(0))
+            List<(int X, int Y)> right = Enumerable.Range(1, array.GetLength(0))
                 .Select(nr => (X: x + nr, Y: y))
                 .Where(tuple => array.IsWithinBounds(tuple.X, tuple.Y))
                 .ToList();
-            var down = Enumerable.Range(1, array.GetLength(1))
+            List<(int X, int Y)> down = Enumerable.Range(1, array.GetLength(1))
                 .Select(nr => (X: x, Y: y + nr))
                 .Where(tuple => array.IsWithinBounds(tuple.X, tuple.Y))
                 .ToList();

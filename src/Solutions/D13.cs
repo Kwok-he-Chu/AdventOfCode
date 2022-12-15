@@ -4,6 +4,9 @@ using System.Text.Json;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 13: Distress Signal
+    /// </summary>
     public class D13
     {
         private readonly AocHttpClient _client = new AocHttpClient(13);
@@ -79,8 +82,8 @@ namespace AOC2022
         private int GetComparisonsResultPart2(string[] split)
         {
             List<JsonElement> elements = new List<JsonElement>();
-            var element2 = JsonSerializer.Deserialize<JsonElement>($"[[2]]");
-            var element6 = JsonSerializer.Deserialize<JsonElement>($"[[6]]");
+            JsonElement element2 = JsonSerializer.Deserialize<JsonElement>($"[[2]]");
+            JsonElement element6 = JsonSerializer.Deserialize<JsonElement>($"[[6]]");
             elements.Add(element2);
             elements.Add(element6);
 

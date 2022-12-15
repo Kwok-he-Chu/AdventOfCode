@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 7: No Space Left On Device
+    /// </summary>
     public class D07
     {
         private readonly AocHttpClient _client = new AocHttpClient(7);
@@ -11,6 +14,7 @@ namespace AOC2022
         public void Execute1()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            //input = "$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
             DirectoryModel root = new DirectoryModel("/", null);
@@ -42,8 +46,8 @@ namespace AOC2022
         private List<DirectoryModel> BuildTreeOfDirectories(string[] split, DirectoryModel root)
         {
             DirectoryModel current = root;
-            List<DirectoryModel> result = new List<DirectoryModel>();
-            result.Add(root);
+            //input = "$ cd /\r\n$ ls\r\ndir a\r\n14848514 b.txt\r\n8504156 c.dat\r\ndir d\r\n$ cd a\r\n$ ls\r\ndir e\r\n29116 f\r\n2557 g\r\n62596 h.lst\r\n$ cd e\r\n$ ls\r\n584 i\r\n$ cd ..\r\n$ cd ..\r\n$ cd d\r\n$ ls\r\n4060174 j\r\n8033020 d.log\r\n5626152 d.ext\r\n7214296 k";
+            List<DirectoryModel> result = new List<DirectoryModel> { root };
 
             for (int i = 0; i < split.Length; i++)
             {

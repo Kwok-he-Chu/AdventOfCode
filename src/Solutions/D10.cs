@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 10: Cathode-Ray Tube
+    /// </summary>
     public class D10
     {
         private readonly AocHttpClient _client = new AocHttpClient(10);

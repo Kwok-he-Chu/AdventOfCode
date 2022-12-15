@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace AOC2022
 {
+    /// <summary>
+    /// Day 5: Supply Stacks
+    /// </summary>
     public class D05
     {
         private readonly AocHttpClient _client = new AocHttpClient(5);
@@ -23,7 +26,9 @@ namespace AOC2022
         public void Execute1()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            //input = "    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+
             for (int i = 7; i >= 0; i--)
             {
                 int index = 0;
@@ -54,7 +59,9 @@ namespace AOC2022
         public void Execute2()
         {
             string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            //input = "    [D]    \r\n[N] [C]    \r\n[Z] [M] [P]\r\n 1   2   3 \r\n\r\nmove 1 from 2 to 1\r\nmove 3 from 1 to 3\r\nmove 2 from 2 to 1\r\nmove 1 from 1 to 2";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+
             for (int i = 7; i >= 0; i--)
             {
                 int index = 0;
@@ -106,9 +113,9 @@ namespace AOC2022
                 queue.Push(pop);
             }
 
-            foreach (var q in queue)
+            foreach (char c in queue)
             {
-                _listOfStacks[indexTo - 1].Push(q);
+                _listOfStacks[indexTo - 1].Push(c);
             }
         }
     }
