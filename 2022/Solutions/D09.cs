@@ -13,7 +13,7 @@ namespace AOC2022
 
         public void Execute1()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "R 4\r\nU 4\r\nL 3\r\nD 1\r\nR 4\r\nD 1\r\nL 5\r\nR 2";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
@@ -23,7 +23,7 @@ namespace AOC2022
 
         public void Execute2()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "R 5\r\nU 8\r\nL 8\r\nD 3\r\nR 17\r\nD 10\r\nL 25\r\nU 20";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 

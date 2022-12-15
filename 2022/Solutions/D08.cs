@@ -13,7 +13,7 @@ namespace AOC2022
 
         public void Execute1()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "30373\r\n25512\r\n65332\r\n33549\r\n35390";
             int[,] inputArray = input.ConvertToIntArray();
             bool[,] visbilityArray = new bool[inputArray.GetLength(0), inputArray.GetLength(1)];
@@ -104,7 +104,7 @@ namespace AOC2022
 
         public void Execute2()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "30373\r\n25512\r\n65332\r\n33549\r\n35390";
             int[,] array = input.ConvertToIntArray();
             int[,] scenicScoreArray = new int[array.GetLength(0), array.GetLength(1)];

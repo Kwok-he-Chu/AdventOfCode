@@ -18,7 +18,20 @@ namespace AOC2022
             _sessionToken = Environment.GetEnvironmentVariable("AdventOfCodeSessionToken", EnvironmentVariableTarget.Machine) ?? throw new ArgumentNullException();
         }
 
-        public async Task<string> RetrieveFile()
+        /// <summary>
+        /// Retrieve input file using a synchronous (blocking) call.
+        /// </summary>
+        /// <returns>Input file.</returns>
+        public string RetrieveFile()
+        {
+            return RetrieveFileAsync().GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Retrieve input file using an asynchronous call.
+        /// </summary>
+        /// <returns>Input file.</returns>
+        private async Task<string> RetrieveFileAsync()
         {
             string fileName = $"input_{_year}_{_day.ToString("D2")}.txt";
             string path = $"../../../Input/";

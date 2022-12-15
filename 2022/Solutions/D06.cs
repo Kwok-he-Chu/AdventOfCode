@@ -12,7 +12,7 @@ namespace AOC2022
 
         public void Execute1()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
             //input = "bvwbjplbgvbhsrlpgdmjqwftvncz";
             //input = "nppdvjthqldpwncqszvftbrmjlhg";
@@ -24,7 +24,7 @@ namespace AOC2022
 
         public void Execute2()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
             //input = "bvwbjplbgvbhsrlpgdmjqwftvncz";
             //input = "nppdvjthqldpwncqszvftbrmjlhg";

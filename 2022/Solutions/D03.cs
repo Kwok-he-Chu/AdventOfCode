@@ -12,7 +12,7 @@ namespace AOC2022
 
         public void Execute1()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
@@ -51,7 +51,7 @@ namespace AOC2022
 
         public void Execute2()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "vJrwpWtwJgWrhcsFMMfFFhFp\r\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\r\nPmmdzqPrVvPwwTWBwg\r\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\r\nttgJtRGJQctTZtZT\r\nCrZsJsPPZsGzwwsLwLmpwMDw";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
             int result = split

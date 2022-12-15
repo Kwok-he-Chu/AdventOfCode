@@ -13,7 +13,7 @@ namespace AOC2022
 
         public void Execute1()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
             IEnumerable<(IEnumerable<int> First, IEnumerable<int> Second)> list = GetListOfFilledNumbers(split);
@@ -29,7 +29,7 @@ namespace AOC2022
 
         public void Execute2()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             //input = "2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8";
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
             IEnumerable<(IEnumerable<int> First, IEnumerable<int> Second)> list = GetListOfFilledNumbers(split);

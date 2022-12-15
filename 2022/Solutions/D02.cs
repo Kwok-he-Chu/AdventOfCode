@@ -12,7 +12,7 @@ namespace AOC2022
 
         public void Execute1()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
             int score = split.Select(x => x switch
@@ -33,7 +33,7 @@ namespace AOC2022
 
         public void Execute2()
         {
-            string input = _client.RetrieveFile().GetAwaiter().GetResult();
+            string input = _client.RetrieveFile();
             string[] split = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
             int score = split.Select(x => x switch
