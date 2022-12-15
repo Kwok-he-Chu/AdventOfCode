@@ -13,11 +13,11 @@ namespace AOC2022
             Console.WriteLine("==========");
             Console.WriteLine("Part One: ");
             Console.WriteLine("==========");
-            new D12().Execute1();
+            new D13().Execute1();
             Console.WriteLine("==========");
             Console.WriteLine("Part Two: ");
             Console.WriteLine("==========");
-            new D12().Execute2();
+            new D13().Execute2();
             Console.ReadKey();
         }
 
@@ -100,5 +100,14 @@ namespace AOC2022
         {
             return x >= array.GetLowerBound(0) && x <= array.GetUpperBound(0) && y >= array.GetLowerBound(1) && y <= array.GetUpperBound(1);
         }
+
+        public static IList<T> Swap<T>(this IList<T> list, int indexA, int indexB)
+        {
+            T temp = list[indexA];
+            list[indexA] = list[indexB];
+            list[indexB] = temp;
+            return list;
+        }
+
     }
 }
