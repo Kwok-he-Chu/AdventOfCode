@@ -37,28 +37,32 @@ namespace AOC2022
             while (true)
             {
                 if (nextPosition.Y > size.MaxY || nextPosition.X <= size.MinX || nextPosition.X >= size.MaxX)
-                    return;
-
-                if (hashSet.Contains(nextPosition))
                 {
-                    Vector2 leftDown = nextPosition + Left;
-                    Vector2 rightDown = nextPosition + Right;
-                    if (!hashSet.Contains(leftDown))
-                    {
-                        nextPosition = leftDown;
-                    }
-                    else if (!hashSet.Contains(rightDown))
-                    {
-                        nextPosition = rightDown;
-                    }
-                    else
-                    {
-                        hashSet.Add(new Vector2('O', nextPosition.X, nextPosition.Y - 1));
-                        return;
-                    }
+                    return;
                 }
 
-                nextPosition += Down;
+                if (!hashSet.Contains(nextPosition))
+                {
+                    nextPosition += Down;
+                    continue;
+                }
+
+                Vector2 leftDown = nextPosition + Left;
+                Vector2 rightDown = nextPosition + Right;
+                if (!hashSet.Contains(leftDown))
+                {
+                    nextPosition = leftDown;
+                    continue;
+                }
+
+                if (!hashSet.Contains(rightDown))
+                {
+                    nextPosition = rightDown;
+                    continue;
+                }
+
+                hashSet.Add(new Vector2('O', nextPosition.X, nextPosition.Y - 1));
+                return;
             }
         }
 
@@ -160,7 +164,6 @@ namespace AOC2022
                 }
 
                 hashSet.Add(new Vector2('O', nextPosition.X, nextPosition.Y - 1));
-
                 if (nextPosition == new Vector2(500, 1))
                 {
                     return true;
@@ -192,7 +195,6 @@ namespace AOC2022
             X = x;
             Y = y;
         }
-
 
         public static Vector2 operator +(Vector2 vectorA, Vector2 vectorB)
         {
