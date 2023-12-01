@@ -16,7 +16,13 @@ public class AOCHttpClient
     {
         _day = day;
         _year = year;
-        _sessionToken = Environment.GetEnvironmentVariable("AdventOfCodeSessionToken", EnvironmentVariableTarget.Machine) ?? throw new ArgumentNullException();
+        
+        // EnvironmentVariableTarget.Process: MacOS (`~/.zshrc`).
+        // EnvironmentVariableTarget.Machine: Windows.
+        _sessionToken = Environment.GetEnvironmentVariable(
+                            "AdventOfCodeSessionToken", 
+                            EnvironmentVariableTarget.Process) 
+                        ?? throw new ArgumentNullException(); 
     }
 
     /// <summary>
