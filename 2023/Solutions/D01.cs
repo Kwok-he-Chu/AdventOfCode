@@ -81,7 +81,7 @@ public class D01
             }
 
             // Lookup the character in the dictionary, if it's not a digit.
-            // We check the characterLengths of: [3, 4, 5].
+            // We check the maximum character lengths of [3, 4, 5] - ("one", "three", "eight").
             if (char.IsLetter(line[i]))
             {
                 foreach (int characterLength in _characterLengths)
