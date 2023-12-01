@@ -11,6 +11,19 @@ public class D01
 {
     private readonly AOCHttpClient _client = new AOCHttpClient(1);
 
+    private Dictionary<string, int> _lookup = new Dictionary<string, int>()
+    {
+        {"one", 1},
+        {"two", 2},
+        {"three", 3},
+        {"four", 4},
+        {"five", 5},
+        {"six", 6},
+        {"seven", 7},
+        {"eight", 8},
+        {"nine", 9},
+    };
+
     public void Execute1()
     {
         string input = _client.RetrieveFile();
@@ -20,7 +33,7 @@ public class D01
         a1b2c3d4e5f
         treb7uchet";*/
 
-        var split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+        string[] split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
         int result = split.Sum(line => (ReadLeftToRight(line) * 10) + ReadLeftToRight(line.Reverse()));
         Console.WriteLine(result);
     }
@@ -38,19 +51,6 @@ public class D01
         return 0;
     }
 
-    private Dictionary<string, int> _lookup = new Dictionary<string, int>()
-    {
-        {"one", 1},
-        {"two", 2},
-        {"three", 3},
-        {"four", 4},
-        {"five", 5},
-        {"six", 6},
-        {"seven", 7},
-        {"eight", 8},
-        {"nine", 9},
-    };
-
     public void Execute2()
     {
         string input = _client.RetrieveFile();
@@ -63,7 +63,7 @@ public class D01
             zoneight234
             7pqrstsixteen";*/
 
-        var split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+        string[] split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
         int result = split.Sum(line => (ReadLeftToRightPart2(line) * 10) + ReadLeftToRightPart2(line.Reverse()));
         Console.WriteLine(result);
     }
