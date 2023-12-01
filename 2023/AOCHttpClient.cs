@@ -16,13 +16,10 @@ public class AOCHttpClient
     {
         _day = day;
         _year = year;
-        
+        // Add your sessionToken from your cookies (adventofcode.com) here.
         // EnvironmentVariableTarget.Process: MacOS (`~/.zshrc`).
         // EnvironmentVariableTarget.Machine: Windows.
-        _sessionToken = Environment.GetEnvironmentVariable(
-                            "AdventOfCodeSessionToken", 
-                            EnvironmentVariableTarget.Process) 
-                        ?? throw new ArgumentNullException(); 
+        _sessionToken = Environment.GetEnvironmentVariable("AdventOfCodeSessionToken", EnvironmentVariableTarget.Process) ?? throw new ArgumentNullException(); 
     }
 
     /// <summary>
