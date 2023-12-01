@@ -20,8 +20,8 @@ public class D01
         a1b2c3d4e5f
         treb7uchet";*/
 
-        var split = input.Split("\n");
-        int result = split.Sum(x => (ReadLeftToRight(x) * 10) + ReadLeftToRight(x.Reverse()));
+        var split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+        int result = split.Sum(line => (ReadLeftToRight(line) * 10) + ReadLeftToRight(line.Reverse()));
         Console.WriteLine(result);
     }
 
@@ -63,8 +63,8 @@ public class D01
             zoneight234
             7pqrstsixteen";*/
 
-        var split = input.Split("\n");
-        int result = split.Sum(x => (ReadLeftToRightPart2(x) * 10) + ReadLeftToRightPart2(x.Reverse()));
+        var split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+        int result = split.Sum(line => (ReadLeftToRightPart2(line) * 10) + ReadLeftToRightPart2(line.Reverse()));
         Console.WriteLine(result);
     }
 
