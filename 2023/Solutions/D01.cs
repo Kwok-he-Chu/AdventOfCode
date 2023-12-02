@@ -80,7 +80,7 @@ public class D01
                 return int.Parse(line[i].ToString());
             }
 
-            // Lookup the character in the dictionary, if it's not a digit.
+            // Lookup the character in the dictionary, if it's a letter.
             // We check the maximum character lengths of [3, 4, 5] - ("one", "three", "eight").
             if (char.IsLetter(line[i]))
             {
