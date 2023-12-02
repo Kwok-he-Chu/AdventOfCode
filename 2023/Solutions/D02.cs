@@ -34,6 +34,29 @@ GameInfo 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
         Console.WriteLine(result.Sum(x => x.GameNumber));
     }
 
+    public void Execute2()
+    {
+        string input = _client.RetrieveFile();
+
+        /*input = @"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";*/
+
+        List<GameInfo> list = ConvertInputToList(input);
+
+        List<int> result = list.Select(game =>
+        {
+            int r = game.List.MaxBy(x => x.Red).Red;
+            int g = game.List.MaxBy(x => x.Green).Green;
+            int b = game.List.MaxBy(x => x.Blue).Blue;
+            return (r * g * b);
+        }).ToList();
+
+        Console.WriteLine(result.Sum());
+    }
+
     private List<GameInfo> ConvertInputToList(string input)
     {
         List<GameInfo> list = new List<GameInfo>();
@@ -74,29 +97,6 @@ GameInfo 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
         }
 
         return list;
-    }
-
-    public void Execute2()
-    {
-        string input = _client.RetrieveFile();
-
-        /*input = @"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
-Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
-Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
-Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";*/
-
-        List<GameInfo> list = ConvertInputToList(input);
-
-        List<int> result = list.Select(game =>
-        {
-            int r = game.List.MaxBy(x => x.Red).Red;
-            int g = game.List.MaxBy(x => x.Green).Green;
-            int b = game.List.MaxBy(x => x.Blue).Blue;
-            return (r * g * b);
-        }).ToList();
-
-        Console.WriteLine(result.Sum());
     }
 
     private record GameInfo
