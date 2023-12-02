@@ -33,7 +33,7 @@ public class D01
         a1b2c3d4e5f
         treb7uchet";*/
 
-        string[] split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+        string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
         int result = split.Sum(line => (ReadLeftToRight(line) * 10) + ReadLeftToRight(line.Reverse()));
         Console.WriteLine(result);
     }
@@ -63,7 +63,7 @@ public class D01
             zoneight234
             7pqrstsixteen";*/
 
-        string[] split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+        string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
         int result = split.Sum(line => (ReadLeftToRightPart2(line) * 10) + ReadLeftToRightPart2(line.Reverse()));
         Console.WriteLine(result);
     }

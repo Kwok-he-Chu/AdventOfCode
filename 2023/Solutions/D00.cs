@@ -15,7 +15,7 @@ public class D00
 
         input = @"";
 
-        string[] split = input.Split("\n");
+        string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
 
         Console.WriteLine();
     }
@@ -26,7 +26,7 @@ public class D00
 
         input = @"";
 
-        string[] split = input.Split("\n");
+        string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
 
         Console.WriteLine();
     }

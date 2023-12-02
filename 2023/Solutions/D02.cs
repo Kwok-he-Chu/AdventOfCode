@@ -23,34 +23,29 @@ GameInfo 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
 ";*/
 
         List<GameInfo> list = ConvertInputToList(input);
-        List<GameInfo> result = list.Select(game => 
-        {
-            bool isRed = game.List.All(x => x.Red <= 12);
-            bool isGreen = game.List.All(x => x.Green <= 13);
-            bool isBlue = game.List.All(x => x.Blue <= 14);
-            
-            if (isRed && isBlue && isGreen)
-                return game;
-            return null;
-        }).Where(x => x != null).ToList();
-        
-        // 2486
+
+        List<GameInfo> result = list
+            .Where(game =>
+                game.List.All(x => x.Red <= 12) &&
+                game.List.All(x => x.Green <= 13) &&
+                game.List.All(x => x.Blue <= 14))
+            .ToList();
+
         Console.WriteLine(result.Sum(x => x.GameNumber));
     }
 
     private List<GameInfo> ConvertInputToList(string input)
     {
         List<GameInfo> list = new List<GameInfo>();
-        string[] split = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
-        foreach(string line in split)
+        string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+        foreach (string line in split)
         {
+            // Parse "Game 1:"
             string[] prefix = line.Split(":");
-            
             int gameNumber = int.Parse(prefix[0].Split(" ")[1]);
-            GameInfo gameInfo = new GameInfo(){ GameNumber = gameNumber };
-            
+            GameInfo gameInfo = new GameInfo() { GameNumber = gameNumber };
+
             string[] games = prefix[1].Split(";");
-            
             foreach (string game in games)
             {
                 string[] rgb = game.Split(",");
@@ -58,7 +53,7 @@ GameInfo 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
                 foreach (string t in rgb)
                 {
                     string[] elements = t.Split(" ");
-                    switch (elements[2]) // color
+                    switch (elements[2]) // Color.
                     {
                         case "red":
                             gameInfoRgb.Red = int.Parse(elements[1]);
@@ -75,7 +70,6 @@ GameInfo 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
                 }
                 gameInfo.List.Add(gameInfoRgb);
             }
-
             list.Add(gameInfo);
         }
 
@@ -86,7 +80,7 @@ GameInfo 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
     {
         string input = _client.RetrieveFile();
 
-        /*nput = @"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+        /*input = @"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
 Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
@@ -94,65 +88,40 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";*/
 
         List<GameInfo> list = ConvertInputToList(input);
 
-        List<GameInfo> result = list.Select(game => 
+        List<int> result = list.Select(game =>
         {
-            bool isRed = game.List.All(x => x.Red <= 12);
-            bool isGreen = game.List.All(x => x.Green <= 13);
-            bool isBlue = game.List.All(x => x.Blue <= 14);
-            
-            if (isRed && isBlue && isGreen)
-                return game;
-            return null;
+            int r = game.List.MaxBy(x => x.Red).Red;
+            int g = game.List.MaxBy(x => x.Green).Green;
+            int b = game.List.MaxBy(x => x.Blue).Blue;
+            return (r * g * b);
         }).ToList();
 
-        var final = new List<int>();
-        for (int index = 0; index < result.Count; index++)
+        Console.WriteLine(result.Sum());
+    }
+
+    private record GameInfo
+    {
+        public int GameNumber { get; set; }
+
+        public List<GameInfoRGB> List { get; } = new List<GameInfoRGB>();
+
+        public override string ToString()
         {
-            GameInfo gameInfo = result[index];
-
-            if (gameInfo == null)
-            {
-                GameInfo impossibleGame = list.First(x => x.GameNumber == index + 1);
-                
-                int r = impossibleGame.List.MaxBy(x => x.Red).Red;
-                int g  = impossibleGame.List.MaxBy(x => x.Green).Green;
-                int b = impossibleGame.List.MaxBy(x => x.Blue).Blue;
-                final.Add(r * g * b);
-            }
-            else
-            {
-                int r = gameInfo.List.MaxBy(x => x.Red).Red;
-                int g  = gameInfo.List.MaxBy(x => x.Green).Green;
-                int b = gameInfo.List.MaxBy(x => x.Blue).Blue;
-                final.Add(r * g * b);
-            }
+            return $"{GameNumber}: R{List.Sum(x => x.Red)} G{List.Sum(x => x.Green)} B{List.Sum(x => x.Blue)}";
         }
-
-        // 87984
-        Console.WriteLine(final.Sum());
-    }
-}
-
-public record GameInfo
-{
-    public int GameNumber { get; set; }
-
-    public override string ToString()
-    {
-        return $"{GameNumber}: R{List.Sum(x => x.Red)} G{List.Sum(x => x.Green)} B{List.Sum(x => x.Blue)}";
     }
 
-    public List<GameInfoRGB> List { get; } = new List<GameInfoRGB>();
-}
-
-public record GameInfoRGB
-{
-    public int Red { get; set; }
-    public int Green { get; set; }
-    public int Blue { get; set; }
-
-    public override string ToString()
+    private record GameInfoRGB
     {
-        return $"R{Red} G{Green} B{Blue}";
+        public int Red { get; set; }
+
+        public int Green { get; set; }
+
+        public int Blue { get; set; }
+
+        public override string ToString()
+        {
+            return $"R{Red} G{Green} B{Blue}";
+        }
     }
 }
