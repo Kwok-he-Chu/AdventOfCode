@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AOC2023.Solutions;
+namespace AOC2023;
 
 /// <summary>
 /// Day 
@@ -13,9 +13,9 @@ public class D00
     {
         string input = _client.RetrieveFile();
 
-        //input = @"";
+        input = @"";
 
-        //var split = input.Split("\n");
+        string[] split = input.Split("\n");
 
         Console.WriteLine();
     }
@@ -24,9 +24,9 @@ public class D00
     {
         string input = _client.RetrieveFile();
 
-        //input = @"";
+        input = @"";
 
-        //var split = input.Split("\n");
+        string[] split = input.Split("\n");
 
         Console.WriteLine();
     }
