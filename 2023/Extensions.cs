@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AOC2023;
 
@@ -19,11 +18,6 @@ public static class Extensions
     {
         if (IsDebug)
             Console.WriteLine(line);
-    }
-
-    public static List<string> ConvertToList(this string input)
-    {
-        return input.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
     public static void PrintArray(this bool[,] array)
@@ -54,7 +48,7 @@ public static class Extensions
 
     public static int[,] ConvertToIntArray(this string input)
     {
-        string[] list = input.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+        string[] list = input.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
         int rowLength = list[0].Length;
         int columnLength = list.Length;
         int[,] result = new int[rowLength, columnLength];
@@ -76,7 +70,7 @@ public static class Extensions
 
     public static char[,] ConvertToCharArray(this string input)
     {
-        string[] list = input.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+        string[] list = input.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
         int rowLength = list[0].Length;
         int columnLength = list.Length;
         char[,] result = new char[rowLength, columnLength];
