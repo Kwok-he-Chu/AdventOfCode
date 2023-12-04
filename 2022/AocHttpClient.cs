@@ -36,7 +36,7 @@ namespace AOC2022
             string fileName = $"input_{_year}_{_day.ToString("D2")}.txt";
             string path = $"../../../Input/";
             
-            // If exists, read file from the folder "/{year}/Input/" after cd from root executable "/bin/Debug/net6.0/"
+            // If exists, read file from the folder "/{year}/Input/"
             if (File.Exists(path + fileName))
                 return File.ReadAllText(path + fileName);
 
@@ -51,7 +51,7 @@ namespace AOC2022
 
             // Save the file to "/{path}/{fileName}" so we don't have to fetch it again.
             string output = await response.Content.ReadAsStringAsync();
-            File.WriteAllLines(path + fileName, output.Split('\n'));
+            File.WriteAllLines(path + fileName, output.Split("\n"));
             
             return File.ReadAllText(path + fileName);
         }

@@ -9,7 +9,7 @@ public class D00
 {
     private readonly AOCHttpClient _client = new AOCHttpClient(0);
 
-    public void Execute1()
+    public void Part1()
     {
         string input = _client.RetrieveFile();
 
@@ -20,7 +20,7 @@ public class D00
         Console.WriteLine();
     }
 
-    public void Execute2()
+    public void Part2()
     {
         string input = _client.RetrieveFile();
 

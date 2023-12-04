@@ -24,7 +24,7 @@ public class D01
         {"nine", 9},
     };
 
-    public void Execute1()
+    public void Part1()
     {
         string input = _client.RetrieveFile();
 
@@ -51,7 +51,7 @@ public class D01
         return 0;
     }
 
-    public void Execute2()
+    public void Part2()
     {
         string input = _client.RetrieveFile();
 

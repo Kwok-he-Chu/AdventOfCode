@@ -16,7 +16,7 @@ public class D03
         (-1,   1), ( 0,  1), ( 1,  1),
     };
 
-    public void Execute1()
+    public void Part1()
     {
         string input = _client.RetrieveFile();
 
@@ -103,7 +103,7 @@ public class D03
         return result;
     }
 
-    public void Execute2()
+    public void Part2()
     {
         string input = _client.RetrieveFile();
 

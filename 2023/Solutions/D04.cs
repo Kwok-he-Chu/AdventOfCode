@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AOC2023;
 
@@ -12,7 +11,7 @@ public class D04
 {
     private readonly AOCHttpClient _client = new AOCHttpClient(4);
     
-    public void Execute1()
+    public void Part1()
     {
         string input = _client.RetrieveFile();
 
@@ -32,7 +31,7 @@ ScratchCard 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11";*/
         Console.WriteLine(sum);
     }
 
-    public void Execute2()
+    public void Part2()
     {
         string input = _client.RetrieveFile();
 

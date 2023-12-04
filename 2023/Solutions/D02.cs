@@ -11,7 +11,7 @@ public class D02
 {
     private readonly AOCHttpClient _client = new AOCHttpClient(2);
 
-    public void Execute1()
+    public void Part1()
     {
         string input = _client.RetrieveFile();
 
@@ -34,7 +34,7 @@ GameInfo 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
         Console.WriteLine(result.Sum(x => x.GameNumber));
     }
 
-    public void Execute2()
+    public void Part2()
     {
         string input = _client.RetrieveFile();
 
