@@ -9,11 +9,11 @@ public class Program
         Console.WriteLine("==========");
         Console.WriteLine("Part One: ");
         Console.WriteLine("==========");
-        new D03().Execute1();
+        new D04().Execute1();
         Console.WriteLine("==========");
         Console.WriteLine("Part Two: ");
         Console.WriteLine("==========");
-        new D03().Execute2();
+        new D04().Execute2();
         Console.ReadKey();
     }
 }
