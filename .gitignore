@@ -1,3 +1,5 @@
+**/Input/
+
 *.swp
 *.*~
 project.lock.json

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AOC2023;
 
@@ -87,12 +88,12 @@ ScratchCard 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11";*/
                         .Select(int.Parse).ToHashSet();
 
                     int number = int.Parse(cardString[0].Split(" ", StringSplitOptions.RemoveEmptyEntries)[1]);
-                    return new ScratchCard(number: number, setA: setA, setB: setB);
-                }
-            ).ToList();
+                    return new ScratchCard(number, setA, setB);
+                })
+            .ToList();
     }
     
-    private record ScratchCard
+    private class ScratchCard
     {
         public int Number { get; }
         public HashSet<int> IntersectionSet { get; }
