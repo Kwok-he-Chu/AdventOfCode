@@ -85,7 +85,7 @@ humidity-to-location map:
 
             foreach (Map map in orderedMaps)
             {
-                // These are all overlapping valid seeds
+                // These are all overlapping valid seed.
                 List<long> validSeedNumbers = result
                     .Where(map.IsWithinRange)
                     .ToList();
@@ -152,6 +152,7 @@ humidity-to-location map:
             .ToList();
 
         List<Seed> result = new List<Seed>();
+
         for (int i = 0; i < inputSeedNumbers.Count; i += 2)
         {
             result.Add(new Seed(inputSeedNumbers[i], inputSeedNumbers[i] + inputSeedNumbers[i + 1]));
@@ -188,7 +189,7 @@ humidity-to-location map:
             {
                 long end = map.SourceRangeStart + map.RangeLength;
 
-                // These are all overlapping valid seeds
+                // These are all overlapping valid seeds.
                 List<Seed> valid = result
                     .Where(map.IsWithinRange)
                     .ToList();
@@ -214,7 +215,6 @@ humidity-to-location map:
         Console.WriteLine(result.Min(s => s.Start));
     }
 
-
     private record Map(long Destination, long SourceRangeStart, long RangeLength)
     {
         public bool IsWithinRange(long number)
@@ -222,9 +222,9 @@ humidity-to-location map:
             return number >= SourceRangeStart && number < SourceRangeStart + RangeLength;
         }
 
-        public bool IsWithinRange(Seed s)
+        public bool IsWithinRange(Seed seed)
         {
-            return s.Start < SourceRangeStart + RangeLength && s.End >= SourceRangeStart;
+            return seed.Start < SourceRangeStart + RangeLength && seed.End >= SourceRangeStart;
         }
 
         public override string ToString()
