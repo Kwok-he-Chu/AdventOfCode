@@ -93,4 +93,22 @@ public static class Extensions
         list[indexB] = temp;
         return list;
     }
+    
+    public static ulong GreatestCommonDivisor(ulong a, ulong b) // GCD
+    {
+        while (a != 0 && b != 0)
+        {
+            if (a > b)
+                a %= b;
+            else
+                b %= a;
+        }
+
+        return a | b;
+    }
+
+    public static ulong LeastCommonMultiple(ulong a, ulong b) // LCM
+    {
+        return a / GreatestCommonDivisor(a, b) * b;
+    }
 }
