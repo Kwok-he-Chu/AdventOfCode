@@ -16,11 +16,35 @@ public class D07
     {
         string input = _client.RetrieveFile();
 
-        input = @"32T3K 765
+        /*input = @"32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
-QQQJA 483";
+QQQJA 483";*/
+
+        input = @"2345A 1
+Q2KJJ 13
+Q2Q2Q 19
+T3T3J 17
+T3Q33 11
+2345J 3
+J345A 2
+32T3K 5
+T55J5 29
+KK677 7
+KTJJT 34
+QQQJA 31
+JJJJJ 37
+JAAAA 43
+AAAAJ 59
+AAAAA 61
+2AAAA 23
+2JJJJ 53
+JJJJ2 41";
+
+        //Part 1: 6592
+
+        //Part 2: 6839
 
         string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
         List<Hand> hands = split.Select(line =>
@@ -50,7 +74,6 @@ QQQJA 483";
             var res = result[i];
             long multiply = (i + 1) * res.Bid;
             sum += multiply;
-            Console.WriteLine(multiply);
         }
 
         Console.WriteLine(sum);
@@ -58,11 +81,25 @@ QQQJA 483";
 
     private bool IsHigherHandCategory(EvaluationResult a, EvaluationResult b)
     {
-        if (a.HandCategory < b.HandCategory)
-            return false;
-
         if (a.HandCategory == b.HandCategory)
         {
+            for (int i = 0; i < 5; i++)
+            {
+                if (a.Hand.Cards[i].Rank > b.Hand.Cards[i].Rank)
+                {
+                    return true;
+                }
+                else if (a.Hand.Cards[i].Rank == b.Hand.Cards[i].Rank)
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            /*
             if (a.HandCategory is HandCategory.FOUR_OF_A_KIND)
             {    
                 if (a.XOfAKind < b.XOfAKind)
@@ -112,10 +149,15 @@ QQQJA 483";
                     return false;
 
                 return a.NextHighCards[2] > b.NextHighCards[2];
-            }
+            }*/
         }
 
-        return true; // a.HandCategory > b.HandCategory
+        if (a.HandCategory >= b.HandCategory)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void Part2()
@@ -157,12 +199,13 @@ QQQJA 483
                    IsOnePair() ??
                    new EvaluationResult()
                    {
+                       Hand = this,
                        HandCategory = HandCategory.HIGH_CARD,
                        NextHighCards = new List<int>() { Cards[0].Rank }
                    };
         }
 
-        private EvaluationResult? IsFullHouse()
+        private EvaluationResult IsFullHouse()
         {
             var groups = Cards.GroupBy(card => card.Rank).ToList();
             var threeOfAKind = groups.Where(group => group.Count() == 3).ToList();
@@ -172,6 +215,7 @@ QQQJA 483
             {
                 return new EvaluationResult()
                 {
+                    Hand = this,
                     HandCategory = HandCategory.FULL_HOUSE,
                     XOfAKind = threeOfAKind.First().Key,
                     PairOne = onePair.First().Key,
@@ -182,7 +226,7 @@ QQQJA 483
             return null;
         }
 
-        private EvaluationResult? IsXOfAKind(int number)
+        private EvaluationResult IsXOfAKind(int number)
         {
             if (number is < 3 or > 5)
                 throw new ArgumentOutOfRangeException();
@@ -193,6 +237,7 @@ QQQJA 483
             {
                 return new EvaluationResult
                 {
+                    Hand = this,
                     HandCategory = number == 5 ? HandCategory.FIVE_OF_A_KIND 
                         : number == 4 ? HandCategory.FOUR_OF_A_KIND 
                         : HandCategory.THREE_OF_A_KIND,
@@ -204,7 +249,7 @@ QQQJA 483
             return null;
         }
 
-        private EvaluationResult? IsTwoPair()
+        private EvaluationResult IsTwoPair()
         {
             var groups = Cards.GroupBy(card => card.Rank).ToList();
             var result = groups.Where(group => group.Count() == 2).ToList();
@@ -212,6 +257,7 @@ QQQJA 483
             {
                 return new EvaluationResult
                 {
+                    Hand = this,
                     HandCategory = HandCategory.TWO_PAIR,
                     PairOne = result[0].Key,
                     PairTwo = result[1].Key,
@@ -222,7 +268,7 @@ QQQJA 483
             return null;
         }
 
-        private EvaluationResult? IsOnePair()
+        private EvaluationResult IsOnePair()
         {
             var groups = Cards.GroupBy(card => card.Rank).ToList();
             var result = groups.Where(group => group.Count() == 2).ToList();
@@ -231,6 +277,7 @@ QQQJA 483
             {
                 return new EvaluationResult
                 {
+                    Hand = this,
                     HandCategory = HandCategory.ONE_PAIR,
                     PairOne = result.First().Key,
                     NextHighCards = GetHighCardWithout(result.First().Key)
@@ -258,7 +305,7 @@ QQQJA 483
 
         public override string ToString()
         {
-            return $"{String.Join("", Cards)} {Bid} \n{EvaluationResult}";
+            return $"{string.Join("", Cards)} {Bid} \n{EvaluationResult}";
         }
     }
 
@@ -273,12 +320,12 @@ QQQJA 483
         FIVE_OF_A_KIND = 7
     }
 
-    private record EvaluationResult(HandCategory? HandCategory = null, int XOfAKind = 0, int PairOne = 0, int PairTwo = 0, List<int> NextHighCards = null)
+    private record EvaluationResult(Hand Hand = null, HandCategory? HandCategory = null, int XOfAKind = 0, int PairOne = 0, int PairTwo = 0, List<int> NextHighCards = null)
     {
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"{HandCategory} | ");
+            sb.Append($"{HandCategory} {string.Join("", Hand.Cards)} | ");
             if (NextHighCards.Count > 0)
             {
                 sb.Append($"NextHighCard: [ {string.Join(", ", NextHighCards)} ] | ");
