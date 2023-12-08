@@ -25,7 +25,6 @@ ZZZ = (ZZZ, ZZZ)";*/
         string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
 
         string instructions = split[0];
-
         Dictionary<string, Node> nodes = ConvertInputToDictionary(split);
 
         int steps = 0;
@@ -34,14 +33,14 @@ ZZZ = (ZZZ, ZZZ)";*/
         {
             char nextInstruction = instructions[steps % instructions.Length];
 
+            steps++;
+
             current = nextInstruction switch
             {
                 'L' => nodes[current.Left],
                 'R' => nodes[current.Right],
                 _ => throw new ArgumentOutOfRangeException()
             };
-
-            steps++;
         }
 
         Console.WriteLine(steps);
@@ -64,46 +63,41 @@ XXX = (XXX, XXX)";*/
 
         string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
 
+        string instructions = split[0];
         Dictionary<string, Node> nodes = ConvertInputToDictionary(split);
         
-        string instructions = split[0];
-        
-        ulong steps = 0;
+        long steps = 0;
         List<Node> currentNodes = nodes
             .Where(x => x.Key.EndsWith("A"))
-            .Select(x => x.Value).ToList();
+            .Select(x => x.Value)
+            .ToList();
 
-        while (true)
+        long[] lookup = new long[currentNodes.Count];
+
+        while (lookup.Any(x => x == 0))
         {
-            char nextInstruction = instructions[steps % instructions.Length];
+            char nextInstruction = instructions[(int)(steps % instructions.Length)];
+
+            steps++;
 
             for (int i = 0; i < currentNodes.Count; i++)
             {
-                Node current = currentNodes[i];
-                if (nextInstruction == 'L')
+                currentNodes[i] = nextInstruction switch
                 {
-                    currentNodes[i] = nodes[current.Left];
-                }
-                else if (nextInstruction == 'R')
+                    'L' => nodes[currentNodes[i].Left],
+                    'R' => nodes[currentNodes[i].Right],
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                if (currentNodes[i].Key.EndsWith("Z"))
                 {
-                    currentNodes[i] = nodes[current.Right];
+                    lookup[i] = steps;
                 }
             }
 
-            if (EndsOnZ(currentNodes))
-            {
-                break;
-            }
-
-            steps++;
         }
 
-        Console.WriteLine(steps);
-    }
-
-    private bool EndsOnZ(List<Node> nodes)
-    {
-        return nodes.All(x => x.Key.Last() == 'Z');
+        Console.WriteLine(lookup.Aggregate(Extensions.LeastCommonMultiple));
     }
     
     private Dictionary<string, Node> ConvertInputToDictionary(string[] split)

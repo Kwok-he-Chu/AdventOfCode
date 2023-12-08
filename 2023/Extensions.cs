@@ -94,7 +94,7 @@ public static class Extensions
         return list;
     }
     
-    public static ulong GreatestCommonDivisor(ulong a, ulong b) // GCD
+    public static long GreatestCommonDivisor(long a, long b) // GCD
     {
         while (a != 0 && b != 0)
         {
@@ -107,7 +107,7 @@ public static class Extensions
         return a | b;
     }
 
-    public static ulong LeastCommonMultiple(ulong a, ulong b) // LCM
+    public static long LeastCommonMultiple(long a, long b) // LCM
     {
         return a / GreatestCommonDivisor(a, b) * b;
     }
