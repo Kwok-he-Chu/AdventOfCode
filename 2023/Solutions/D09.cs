@@ -10,7 +10,6 @@ namespace AOC2023;
 public class D09
 {
     private readonly AOCHttpClient _client = new AOCHttpClient(9);
-    private IEnumerable<object> history;
 
     public void Part1()
     {
