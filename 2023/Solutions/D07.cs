@@ -40,6 +40,11 @@ QQQJA 483";*/
             }
         }
 
+        foreach (var r in result)
+        {
+            Console.WriteLine(string.Join("", r.Cards) + " |  " + r.Bid);
+        }
+
         long sum = 0;
         for (var i = result.Count - 1; i >= 0; i--)
         {
