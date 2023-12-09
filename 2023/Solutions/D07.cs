@@ -22,57 +22,29 @@ KK677 28
 KTJJT 220
 QQQJA 483";*/
 
-        input = @"2345A 1
-Q2KJJ 13
-Q2Q2Q 19
-T3T3J 17
-T3Q33 11
-2345J 3
-J345A 2
-32T3K 5
-T55J5 29
-KK677 7
-KTJJT 34
-QQQJA 31
-JJJJJ 37
-JAAAA 43
-AAAAJ 59
-AAAAA 61
-2AAAA 23
-2JJJJ 53
-JJJJ2 41";
-
-        //Part 1: 6592
-
-        //Part 2: 6839
-
-        string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-        List<Hand> hands = split.Select(line =>
-        {
-            string[] hand = line.Split(" ");
-            return new Hand(hand[0], int.Parse(hand[1]));
-        }).ToList();
+        List<Hand> hands = ConvertInputToList(input, false);
 
         List<Hand> result = new List<Hand>();
+
         foreach (Hand hand in hands)
         {
             result.Add(hand);
-            for (int i = 0; i < result.Count - 1; i++)
+            for (int i = result.Count - 1; i > 0; i--)
             {
                 EvaluationResult a = result[i].EvaluationResult;
-                EvaluationResult b = result[i + 1].EvaluationResult;
+                EvaluationResult b = result[i - 1].EvaluationResult;
                 if (IsHigherHandCategory(a, b))
                 {
-                    result.Swap(i, i + 1);
+                    result.Swap(i, i - 1);
                 }
             }
         }
 
         long sum = 0;
-        for (var i = 0; i < result.Count; i++)
+        for (var i = result.Count - 1; i >= 0; i--)
         {
-            var res = result[i];
-            long multiply = (i + 1) * res.Bid;
+            Hand res = result[i];
+            long multiply = (result.Count - i) * res.Bid;
             sum += multiply;
         }
 
@@ -85,11 +57,11 @@ JJJJ2 41";
         {
             for (int i = 0; i < 5; i++)
             {
-                if (a.Hand.Cards[i].Rank > b.Hand.Cards[i].Rank)
+                if (a.Hand.OriginalCards[i].Rank > b.Hand.OriginalCards[i].Rank)
                 {
                     return true;
                 }
-                else if (a.Hand.Cards[i].Rank == b.Hand.Cards[i].Rank)
+                else if (a.Hand.OriginalCards[i].Rank == b.Hand.OriginalCards[i].Rank)
                 {
                     continue;
                 }
@@ -98,95 +70,107 @@ JJJJ2 41";
                     break;
                 }
             }
-
-            /*
-            if (a.HandCategory is HandCategory.FOUR_OF_A_KIND)
-            {    
-                if (a.XOfAKind < b.XOfAKind)
-                    return false;
-                return a.NextHighCards.First() > b.NextHighCards.First();
-            }
-
-            if (a.HandCategory is HandCategory.FULL_HOUSE)
-            {
-                if (a.XOfAKind < b.XOfAKind)
-                    return false;
-
-                return a.PairOne > b.PairOne;
-            }
-
-            if (a.HandCategory is HandCategory.THREE_OF_A_KIND)
-            {
-                if (a.XOfAKind < b.XOfAKind)
-                    return false;
-                
-                if (a.NextHighCards.First() < b.NextHighCards.First())
-                    return false;
-
-                return a.NextHighCards[1] > b.NextHighCards[1];
-            }
-            
-            if (a.HandCategory is HandCategory.TWO_PAIR)
-            {
-                if (a.PairOne < b.PairOne)
-                    return false;
-                
-                if (a.PairTwo < b.PairTwo)
-                    return false;
-
-                return a.NextHighCards.First() > b.NextHighCards.First();
-            }
-                        
-            if (a.HandCategory is HandCategory.ONE_PAIR)
-            {
-                if (a.PairOne < b.PairOne)
-                    return false;
-                
-                if (a.NextHighCards[0] < b.NextHighCards[0])
-                    return false;
-                
-                if (a.NextHighCards[1] < b.NextHighCards[1])
-                    return false;
-
-                return a.NextHighCards[2] > b.NextHighCards[2];
-            }*/
         }
 
-        if (a.HandCategory >= b.HandCategory)
-        {
-            return true;
-        }
-
-        return false;
+        return a.HandCategory > b.HandCategory;
     }
 
     public void Part2()
     {
         string input = _client.RetrieveFile();
 
-        input = @"32T3K 765
+        /*input = @"32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
-QQQJA 483
-";
+QQQJA 483";*/
 
-        string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+        List<Hand> hands = ConvertInputToList(input, true);
 
-        Console.WriteLine();
+        List<Hand> result = new List<Hand>();
+
+        foreach (Hand hand in hands)
+        {
+            result.Add(hand);
+            for (int i = result.Count - 1; i > 0; i--)
+            {
+                EvaluationResult a = result[i].EvaluationResult;
+                EvaluationResult b = result[i - 1].EvaluationResult;
+                if (IsHigherHandCategory(a, b))
+                {
+                    result.Swap(i, i - 1);
+                }
+            }
+        }
+
+        foreach (var r in result)
+        {
+            Console.WriteLine(string.Join("", r.Cards) + " |  " + r.Bid);
+        }
+
+        long sum = 0;
+        for (var i = result.Count - 1; i >= 0; i--)
+        {
+            Hand res = result[i];
+            long multiply = (result.Count - i) * res.Bid;
+            sum += multiply;
+        }
+
+        Console.WriteLine(sum);
     }
-    
+
+
+    private List<Hand> ConvertInputToList(string input, bool useJokers)
+    {
+        string[] split = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+        return split.Select(line =>
+        {
+            string[] hand = line.Split(" ");
+            return new Hand(hand[0], int.Parse(hand[1]), useJokers);
+        }).ToList();
+    }
+
     private class Hand
     {
-        public List<Card> Cards { get; }
-        public int Bid { get; }
-        public EvaluationResult EvaluationResult { get; }
-        
-        public Hand(String cards, int bid)
+        public List<Card> OriginalCards { get; private set; }
+        public List<Card> Cards { get; private set; }
+        public int Bid { get; private set; }
+        public EvaluationResult EvaluationResult { get; private set; }
+
+        public Hand(string cards, int bid, bool useJokers)
         {
-            Cards = cards.Select(c => new Card(c)).ToList(); 
             Bid = bid;
-            EvaluationResult = Evaluate();
+            OriginalCards = cards
+                .Select(c => new Card(c, useJokers))
+                .ToList();
+            Cards = cards
+                .Select(c => new Card(c, useJokers))
+                .ToList();
+            EvaluationResult = useJokers
+                ? EvaluateWithJokers()
+                : Evaluate();
+        }
+
+        private void ReplaceJokerWith(int rank)
+        {
+            char rankCharacter = rank switch
+            {
+                1 => 'J',
+                14 => 'A',
+                13 => 'K',
+                12 => 'Q',
+                10 => 'T',
+                _ when rank >= 2 && rank <= 9 => (char)(rank + '0'), // [2 .. 9]
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            for (int i = 0; i < Cards.Count; i++)
+            {
+                if (Cards[i].IsJoker)
+                {
+                    Cards[i] = new Card(rankCharacter);
+                }
+            }
         }
 
         private EvaluationResult Evaluate()
@@ -201,8 +185,145 @@ QQQJA 483
                    {
                        Hand = this,
                        HandCategory = HandCategory.HIGH_CARD,
-                       NextHighCards = new List<int>() { Cards[0].Rank }
+                       NextHighCards = new List<Card>() { Cards.MaxBy(x => x.Rank) }
                    };
+        }
+
+        private EvaluationResult EvaluateWithJokers()
+        {
+            EvaluationResult = Evaluate();
+            int numberOfJokers = EvaluationResult.Hand.Cards.Count(x => x.IsJoker);
+            if (numberOfJokers > 0)
+            {
+                switch (EvaluationResult.HandCategory)
+                {
+                    case HandCategory.FIVE_OF_A_KIND:
+                        // JJJJJ
+                        return EvaluationResult;
+                    case HandCategory.FOUR_OF_A_KIND:
+                        if (numberOfJokers == 1)
+                        {
+                            // 4444[J]
+                            // 4444[4]
+                            this.ReplaceJokerWith(EvaluationResult.XOfAKind); // 4
+                        }
+                        else if (numberOfJokers == 4)
+                        {
+                            // [JJJJ]A
+                            // [AAAA]A
+                            this.ReplaceJokerWith(EvaluationResult.NextHighCards.First().Rank); // A
+                        }
+                        else
+                        {
+                            throw new ArgumentException();
+                        }
+
+                        break;
+                    case HandCategory.FULL_HOUSE:
+                        if (numberOfJokers == 3)
+                        {
+                            /// [JJJ]AA
+                            /// [AAA]AA
+                            this.ReplaceJokerWith(EvaluationResult.PairOne); // AA
+                        }
+                        else if (numberOfJokers == 2)
+                        {
+                            /// 444[JJ]
+                            /// 444[44]
+                            this.ReplaceJokerWith(EvaluationResult.XOfAKind);  // 44
+                        }
+                        else
+                        {
+                            throw new ArgumentException();
+                        }
+
+                        break;
+                    case HandCategory.THREE_OF_A_KIND:
+                        if (numberOfJokers == 3)
+                        {
+                            /// [JJJ]A1
+                            /// [AAA]A1
+                            this.ReplaceJokerWith(EvaluationResult.NextHighCards.First().Rank); // AAA
+                        }
+                        else if (numberOfJokers == 1)
+                        {
+                            /// 444[J]A 
+                            /// 444[4]A
+                            this.ReplaceJokerWith(EvaluationResult.XOfAKind); // 4
+
+                        }
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case HandCategory.TWO_PAIR:
+                        if (numberOfJokers == 2)
+                        {
+                            /// [JJ]AA1
+                            /// [AA]AA1
+
+                            /// AA[JJ]1
+                            /// AA[AA]1
+                            var higherTwoPair = Math.Max(EvaluationResult.PairOne, EvaluationResult.PairTwo);
+                            this.ReplaceJokerWith(higherTwoPair); // AA
+                        }
+                        else if (numberOfJokers == 1)
+                        {
+                            /// 44[22]J
+                            /// 44[44]J
+
+                            /// QQ[55]J
+                            /// QQ[QQ]J
+                            var lowerTwoPair = Math.Min(EvaluationResult.PairOne, EvaluationResult.PairTwo);
+                            this.ReplaceJokerWith(lowerTwoPair); // QQ or 44
+
+                        }
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case HandCategory.ONE_PAIR:
+                        if (numberOfJokers == 1)
+                        {
+                            // 88[J]56
+                            // 88[8]56
+                            this.ReplaceJokerWith(EvaluationResult.PairOne); // 8
+                        }
+                        else if (numberOfJokers == 2)
+                        {
+                            // [JJ]234
+                            // [44]234
+                            this.ReplaceJokerWith(EvaluationResult.NextHighCards.First().Rank); // 44
+                        }
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case HandCategory.HIGH_CARD:
+                        if (numberOfJokers == 1)
+                        {
+                            // 2345[J]
+                            // 2345[5]
+                            this.ReplaceJokerWith(EvaluationResult.NextHighCards.First().Rank); // 5
+                        }
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException();
+                        }
+                        break;
+                    default:
+                        throw new ArgumentException();
+                }
+            }
+
+            EvaluationResult = Evaluate();
+            return EvaluationResult;
         }
 
         private EvaluationResult IsFullHouse()
@@ -219,18 +340,18 @@ QQQJA 483
                     HandCategory = HandCategory.FULL_HOUSE,
                     XOfAKind = threeOfAKind.First().Key,
                     PairOne = onePair.First().Key,
-                    NextHighCards = new List<int>()
+                    NextHighCards = new List<Card>()
                 };
             }
 
             return null;
         }
 
-        private EvaluationResult IsXOfAKind(int number)
+        private EvaluationResult IsXOfAKind(int number, bool useJokers = false)
         {
             if (number is < 3 or > 5)
                 throw new ArgumentOutOfRangeException();
-            
+
             var groups = Cards.GroupBy(card => card.Rank).ToList();
             var result = groups.Where(group => group.Count() == number).ToList();
             if (result.Count == 1)
@@ -238,8 +359,8 @@ QQQJA 483
                 return new EvaluationResult
                 {
                     Hand = this,
-                    HandCategory = number == 5 ? HandCategory.FIVE_OF_A_KIND 
-                        : number == 4 ? HandCategory.FOUR_OF_A_KIND 
+                    HandCategory = number == 5 ? HandCategory.FIVE_OF_A_KIND
+                        : number == 4 ? HandCategory.FOUR_OF_A_KIND
                         : HandCategory.THREE_OF_A_KIND,
                     XOfAKind = result.First().Key,
                     NextHighCards = GetHighCardWithout(result.First().Key)
@@ -272,7 +393,7 @@ QQQJA 483
         {
             var groups = Cards.GroupBy(card => card.Rank).ToList();
             var result = groups.Where(group => group.Count() == 2).ToList();
-            
+
             if (result.Count == 1)
             {
                 return new EvaluationResult
@@ -287,19 +408,17 @@ QQQJA 483
             return null;
         }
 
-        private List<int> GetHighCardWithout(int rankToExclude)
+        private List<Card> GetHighCardWithout(int rankToExclude)
         {
             return Cards.Where(card => card.Rank != rankToExclude)
                 .OrderByDescending(card => card.Rank)
-                .Select(card => card.Rank)
                 .ToList();
         }
 
-        private List<int> GetHighCardWithout(int rankToExcludeA, int rankToExcludeB)
+        private List<Card> GetHighCardWithout(int rankToExcludeA, int rankToExcludeB)
         {
             return Cards.Where(card => card.Rank != rankToExcludeA && card.Rank != rankToExcludeB)
                 .OrderByDescending(card => card.Rank)
-                .Select(card => card.Rank)
                 .ToList();
         }
 
@@ -320,37 +439,37 @@ QQQJA 483
         FIVE_OF_A_KIND = 7
     }
 
-    private record EvaluationResult(Hand Hand = null, HandCategory? HandCategory = null, int XOfAKind = 0, int PairOne = 0, int PairTwo = 0, List<int> NextHighCards = null)
+    private record EvaluationResult(Hand Hand = null, HandCategory? HandCategory = null, int XOfAKind = 0, int PairOne = 0, int PairTwo = 0, List<Card> NextHighCards = null)
     {
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"{HandCategory} {string.Join("", Hand.Cards)} | ");
-            if (NextHighCards.Count > 0)
-            {
-                sb.Append($"NextHighCard: [ {string.Join(", ", NextHighCards)} ] | ");
-            }
+            sb.Append($"{HandCategory} {string.Join("", Hand.OriginalCards)} | ");
+            if (NextHighCards.Count > 0) sb.Append($"NextHighCard: [ {string.Join(", ", NextHighCards)} ] | ");
             if (PairOne != 0) sb.Append($"PairOne: {PairOne} | ");
             if (PairTwo != 0) sb.Append($"PairTwo: {PairTwo} | ");
             if (XOfAKind != 0) sb.Append($"XOfAKind: {XOfAKind} | ");
             return sb.ToString();
         }
     }
-    
-    private class Card 
+
+    private class Card
     {
         public int Rank { get; }
-        private readonly char _rank;
 
-        public Card(char rank)
+        private char _rank;
+
+        public bool IsJoker => _rank == 'J';
+
+        public Card(char rank, bool useJokers = false)
         {
-            _rank = rank; 
+            _rank = rank;
             Rank = rank switch
             {
                 'A' => 14,
                 'K' => 13,
                 'Q' => 12,
-                'J' => 11,
+                'J' => useJokers ? 1 : 11,
                 'T' => 10,
                 _ when char.IsDigit(rank) => int.Parse(rank.ToString()),
                 _ => throw new ArgumentOutOfRangeException(rank.ToString())
@@ -359,7 +478,7 @@ QQQJA 483
 
         public override string ToString()
         {
-            return $"{_rank}";
+            return _rank.ToString();
         }
     }
 }
