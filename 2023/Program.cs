@@ -14,7 +14,7 @@ public class Program
         Console.WriteLine("----------------");
 
         Stopwatch stopwatch = Stopwatch.StartNew();
-        new D09().Part1(); // Execute Part 1.
+        new D11().Part1(); // Execute Part 1.
         stopwatch.Stop();
 
         Console.WriteLine("");
@@ -31,7 +31,7 @@ public class Program
         Console.WriteLine("----------------");
 
         stopwatch.Start();
-        new D09().Part2(); // Execute Part 2.
+        new D11().Part2(); // Execute Part 2.
         stopwatch.Stop();
 
         Console.WriteLine("");
