@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AOC2023;
 
 /// <summary>
-/// Day 
+/// Day 10: Pipe Maze.
 /// </summary>
 public class D10
 {
@@ -31,24 +31,31 @@ L|-JF
             }
         }
 
-        Node start = FindStartNode('S', nodes);
+
+        Node start = FindNode('S', nodes);
 
         Console.WriteLine();
     }
 
-    private Node FindStartNode(char symbol, Node[,] nodes)
+    private Dictionary<char, List<Direction>> Lookup = new();
+
+    private Node FindNode(char symbol, Node[,] nodes)
     {
         for (int y = 0; y < nodes.GetLength(0); y++)
         {
             for (int x = 0; x < nodes.GetLength(1); x++)
             {
-                if (nodes[x,y].Symbol == symbol)
+                if (nodes[x, y].Symbol == symbol)
+                {
                     return nodes[x, y];
+                }
             }
         }
 
         return null;
     }
+
+    private record Direction() { }
 
     private record Node(int X, int Y, char Symbol, bool IsSeen, int Steps)
     {
