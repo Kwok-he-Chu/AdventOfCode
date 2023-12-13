@@ -67,7 +67,7 @@ L|-JF
                     int newY = y + dir.Y;
                     if (array.IsWithinBounds(newX, newY))
                     {
-                        neighbors.Add();
+                        //neighbors.Add();
                     }
                 }
 
@@ -92,7 +92,7 @@ L|-JF
                 int newY = current.Y + dir.Y;
                 if (array.IsWithinBounds(newX, newY))
                 {
-                    neighbors.Add((newX, newY));
+                    //neighbors.Add((newX, newY));
                 }
             }
         }
