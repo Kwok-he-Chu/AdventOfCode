@@ -131,11 +131,11 @@ public class D11
     private List<int> GetInsertedRowIndices(List<List<char>> map)
     {
         List<int> result = new List<int>();
-        for (int rowIndex = 0; rowIndex < map[1].Count; rowIndex++)
+        for (int x = 0; x < map[1].Count; x++)
         {
-            if (map.All(c => c[rowIndex] == '.'))
+            if (map.All(c => c[x] == '.'))
             {
-                result.Add(rowIndex);
+                result.Add(x);
             }
         }
         return result;
@@ -144,11 +144,11 @@ public class D11
     private List<int> GetInsertedColumnIndices(List<List<char>> map)
     {
         List<int> result = new List<int>();
-        for (int columnIndex = 0; columnIndex < map.Count; columnIndex++)
+        for (int y = 0; y < map.Count; y++)
         {
-            if (map[columnIndex].All(spot => spot == '.'))
+            if (map[y].All(spot => spot == '.'))
             {
-                result.Add(columnIndex);
+                result.Add(y);
             }
         }
         return result;

@@ -61,7 +61,7 @@ L|-JF
     {
         public override string ToString()
         {
-            return $"({X}, {Y}): {Symbol.ToString()} {IsSeen} {Steps}";
+            return $"({X}, {Y}): {Symbol} {IsSeen} {Steps}";
         }
     }
     
