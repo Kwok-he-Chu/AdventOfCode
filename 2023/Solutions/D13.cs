@@ -31,39 +31,30 @@ public class D13
 ..##..###
 #....#..#";*/
 
-        string[] split = input.Split(Environment.NewLine);
-        List<Grids> grids = new List<Grids>();
-
-        List<string> list = new List<string>();
-        for (int i = 0; i < split.Length; i++)
-        {
-            if (string.IsNullOrWhiteSpace(split[i]))
-            {
-                grids.Add(new Grids(list));
-                list = new List<string>();
-                i++;
-                continue;
-            }
-
-            list.Add(split[i]);
-
-            // Append the remaining result
-            if (i == split.Length - 1)
-            {
-                grids.Add(new Grids(list));
-            }
-        }
+        List<Pattern> patterns = ConvertInputToList(input);
 
         int sum = 0;
-        foreach (Grids grid in grids)
+        foreach (Pattern grid in patterns)
         {
-            int rowNumber = GetSymmetricalValue(grid.Grid) * 100;
-            int columNumber = GetSymmetricalValue(grid.GridFlipped);
+            List<(int Size, int Index)> columns = GetMirrors(grid.Line)
+                .OrderByDescending(x => x.Size)
+                .ToList();
+            List<(int Size, int Index)> rows = GetMirrors(FlipStringList(grid.Line))
+                .OrderByDescending(x => x.Size)
+                .ToList();
 
-            sum += rowNumber + columNumber;
+            if (columns.Count > 0)
+            {
+                sum += columns.First().Index * 100;
+            }
+            else if (rows.Count > 0)
+            {
+                sum += rows.First().Index;
+            }
         }
         Console.WriteLine(sum);
     }
+
 
     public void Part2()
     {
@@ -85,115 +76,206 @@ public class D13
 ..##..###
 #....#..#";
 
-        string[] split = input.Split(Environment.NewLine);
-        List<Grids> grids = new List<Grids>();
+        /*input = @"#.##..##.
+..#.##.#.
+##......#
+##......#
+..#.##.#.
+..##..##.
+#.#.##.#.
 
-        List<string> list = new List<string>();
+#...##..#
+#....#..#
+..##..###
+#####.##.
+#####.##.
+..##..###
+#....#..#
+
+.#.##.#.#
+.##..##..
+.#.##.#..
+#......##
+#......##
+.#.##.#..
+.##..##.#
+
+#..#....#
+###..##..
+.##.#####
+.##.#####
+###..##..
+#..#....#
+#..##...#
+
+#.##..##.
+..#.##.#.
+##..#...#
+##...#..#
+..#.##.#.
+..##..##.
+#.#.##.#.";
+
+        /*input = @"###.##.##
+##.####.#
+##.#..#.#
+####..###
+....##...
+##.#..#.#
+...#..#..
+##..###.#
+##......#
+##......#
+..#.##.#.
+...#..#..
+##.####.#
+....##...
+...####..
+....##...
+##.####.#
+
+.##.##...##...##.
+#####..##..##..##
+.....##..##..##..
+.##.#.#.####.#.#.
+.##...#.#..#.#...
+....#..........#.
+#..#..#......#..#
+....###.....####.
+.##...#.#..#.#...
+.....#..####..#..
+#..#...##..##...#
+....#...#..#...#.
+#..#.##########.#
+#..##...####...##
+#####.##.##.##.##";*/
+
+        List<Pattern> patterns = ConvertInputToList(input);
+
+        int sum = 0;
+        foreach (Pattern grid in patterns)
+        {
+            List<(int Size, int Index)> columns = GetMirrors(grid.Line)
+                .OrderByDescending(x => x.Size)
+                .ToList();
+            List<(int Size, int Index)> rows = GetMirrors(FlipStringList(grid.Line))
+                .OrderByDescending(x => x.Size)
+                .ToList();
+
+            if (columns.Count > 0)
+            {
+                sum += columns.First().Index * 100;
+            }
+            else if (rows.Count > 0)
+            {
+                sum += rows.First().Index;
+            }
+        }
+        Console.WriteLine(sum);
+    }
+
+    private List<Pattern> ConvertInputToList(string input)
+    {
+        string[] split = input.Split(Environment.NewLine);
+        List<Pattern> patterns = new List<Pattern>();
+
+        List<string> lines = new List<string>();
         for (int i = 0; i < split.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(split[i]))
+            if (string.IsNullOrWhiteSpace(split[i]) && lines.Count > 0)
             {
-                grids.Add(new Grids(list));
-                list = new List<string>();
+                patterns.Add(new Pattern(lines));
+                lines = new List<string>();
                 continue;
             }
 
-            list.Add(split[i]);
+            //list.Add(split[i].Replace('.', '0').Replace('#', '1'));
+            lines.Add(split[i]);
 
-            // Append the last grid if we reach end of array.
-            if (i == split.Length - 1)
+            // Append the remaining result if the input.txt doesn't end with a '\n'
+            if (i == split.Length - 1 && lines.Count > 0)
             {
-                grids.Add(new Grids(list));
+                patterns.Add(new Pattern(lines));
             }
         }
+
+        return patterns;
     }
 
-    private int GetSymmetricalValue(List<string> grid)
+    private IEnumerable<(int Size, int Index)> GetMirrors(List<string> line)
     {
-        int center = grid.Count / 2;
+        List<(int Size, int Index)> mirrors = new List<(int Size, int Index)>();
 
-        if (grid.Count % 2 == 0) // Even.
+        for (int i = 0; i < line.Count - 1; i++)
         {
-            var top = grid.Splice(0, center).ToList();
-            var bot = grid.Splice(center + 1, center).Reverse().ToList();
-            
-            Console.WriteLine("even");
-            Console.WriteLine();
-            Console.WriteLine(string.Join("\n", top));
-            Console.WriteLine();
-            Console.WriteLine(string.Join("\n", bot));
-            Console.WriteLine();
-
-            if (top.SequenceEqual(bot))
+            if (line[i] == line[i + 1])
             {
-                return center;
-            }
-            
-            return 0;
-        }
-        else // Uneven.
-        {
-            var top = grid.Splice(0, center).ToList();
-            var bot = grid.Splice(center + 1, center).Reverse().ToList();
-            
-            Console.WriteLine("v1");
-            Console.WriteLine();
-            Console.WriteLine(string.Join("\n", top));
-            Console.WriteLine();
-            Console.WriteLine(string.Join("\n", bot));
-            Console.WriteLine();
-            
-            if (top.SequenceEqual(bot))
-            {
-                return center;
-            }
-            
-            top = grid.Splice(1, center).ToList();
-            bot = grid.Splice(center + 1, center).Reverse().ToList();
+                int min = Math.Min(i, line.Count - i - 2);
 
-            Console.WriteLine("v2");
-            Console.WriteLine(string.Join("\n", top));
-            Console.WriteLine();
-            Console.WriteLine(string.Join("\n", bot));
-            Console.WriteLine();
-
-            if (top.SequenceEqual(bot))
-            {
-                return center + 1;
-            }
-            
-            return 0;
-        }
-
-    }
-
-    private class Grids
-    {
-        public List<string> Grid { get; }
-        public List<string> GridFlipped { get; }
-
-        public Grids(List<string> grid)
-        {
-            Grid = grid;
-            GridFlipped = new List<string>();
-
-            for (int i = 0; i < Grid[0].Length; i++)
-            {
-                GridFlipped.Add(string.Empty);
-            }
-
-            for (int i = 0; i < GridFlipped.Count; i++)
-            {
-                for (int j = 0; j < Grid.Count; j++)
+                for (var j = 0; j <= min; j++)
                 {
-                    GridFlipped[i] += Grid[j][i];
+                    if (line[i - j] != line[i + j + 1])
+                    {
+                        break;
+                    }
+
+                    if (j == min)
+                    {
+                        mirrors.Add((min, i + 1));
+                    }
                 }
             }
         }
 
+        return mirrors;
+    }
+
+
+    /// <summary>
+    /// #### <
+    /// ....
+    /// ....
+    /// ....
+    /// 
+    /// -> becomes ->
+    /// 
+    /// v
+    /// #...
+    /// #...
+    /// #...
+    /// #...
+    /// </summary>
+    private List<string> FlipStringList(List<string> line)
+    {
+        List<string> flippedResult = new List<string>();
+        for (int i = 0; i < line[0].Length; i++)
+        {
+            flippedResult.Add(string.Empty);
+        }
+
+        for (int i = 0; i < flippedResult.Count; i++)
+        {
+            for (int j = 0; j < line.Count; j++)
+            {
+                flippedResult[i] += line[j][i];
+            }
+        }
+
+        return flippedResult;
+    }
+
+    private class Pattern
+    {
+        public List<string> Line { get; }
+
+        public Pattern(List<string> line)
+        {
+            Line = line;
+        }
+
         public override string ToString()
         {
-            return string.Join(Environment.NewLine, Grid) + Environment.NewLine + Environment.NewLine + string.Join(Environment.NewLine, GridFlipped);
+            return string.Join(Environment.NewLine, Line);
         }
     }
 }
