@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AOC2023;
 
@@ -93,7 +94,12 @@ public static class Extensions
         list[indexB] = temp;
         return list;
     }
-    
+
+    public static IEnumerable<T> Splice<T>(this IEnumerable<T> list, int offset, int count)
+    {
+        return list.Skip(offset).Take(count);
+    }
+
     public static long GreatestCommonDivisor(long a, long b) // GCD
     {
         while (a != 0 && b != 0)

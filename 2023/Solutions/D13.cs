@@ -15,7 +15,7 @@ public class D13
     {
         string input = _client.RetrieveFile();
 
-        input = @"#.##..##.
+        /*input = @"#.##..##.
 ..#.##.#.
 ##......#
 ##......#
@@ -29,7 +29,7 @@ public class D13
 #####.##.
 #####.##.
 ..##..###
-#....#..#";
+#....#..#";*/
 
         string[] split = input.Split(Environment.NewLine);
         List<Grids> grids = new List<Grids>();
@@ -41,6 +41,7 @@ public class D13
             {
                 grids.Add(new Grids(list));
                 list = new List<string>();
+                i++;
                 continue;
             }
 
@@ -53,16 +54,13 @@ public class D13
             }
         }
 
-        //foreach (var grid in grids)
-        //{
-        //    Console.WriteLine(grid);
-        //    Console.WriteLine();
-        //}
-
         int sum = 0;
         foreach (Grids grid in grids)
         {
-            sum += GetSymmetricalValue(grid, 0);
+            int rowNumber = GetSymmetricalValue(grid.Grid) * 100;
+            int columNumber = GetSymmetricalValue(grid.GridFlipped);
+
+            sum += rowNumber + columNumber;
         }
         Console.WriteLine(sum);
     }
@@ -110,37 +108,63 @@ public class D13
         }
     }
 
-    private int GetSymmetricalValue(Grids grids, int column) // WIP
+    private int GetSymmetricalValue(List<string> grid)
     {
-        for (int i = 3; i < grids.Grid.Count - 3; i += 1)
+        int center = grid.Count / 2;
+
+        if (grid.Count % 2 == 0) // Even.
         {
-            string gridA1 = grids.Grid[i - 3];
-            string gridB1 = grids.Grid[i - 2];
-            string gridC1 = grids.Grid[i - 1];
-            string gridC2 = grids.Grid[i];
-            string gridB2 = grids.Grid[i + 1];
-            string gridA2 = grids.Grid[i + 2];
-            if (gridA1 == gridA2 && gridB1 == gridB2 && gridC1 == gridC2)
+            var top = grid.Splice(0, center).ToList();
+            var bot = grid.Splice(center + 1, center).Reverse().ToList();
+            
+            Console.WriteLine("even");
+            Console.WriteLine();
+            Console.WriteLine(string.Join("\n", top));
+            Console.WriteLine();
+            Console.WriteLine(string.Join("\n", bot));
+            Console.WriteLine();
+
+            if (top.SequenceEqual(bot))
             {
-                return i + 1;
+                return center;
             }
+            
+            return 0;
+        }
+        else // Uneven.
+        {
+            var top = grid.Splice(0, center).ToList();
+            var bot = grid.Splice(center + 1, center).Reverse().ToList();
+            
+            Console.WriteLine("v1");
+            Console.WriteLine();
+            Console.WriteLine(string.Join("\n", top));
+            Console.WriteLine();
+            Console.WriteLine(string.Join("\n", bot));
+            Console.WriteLine();
+            
+            if (top.SequenceEqual(bot))
+            {
+                return center;
+            }
+            
+            top = grid.Splice(1, center).ToList();
+            bot = grid.Splice(center + 1, center).Reverse().ToList();
+
+            Console.WriteLine("v2");
+            Console.WriteLine(string.Join("\n", top));
+            Console.WriteLine();
+            Console.WriteLine(string.Join("\n", bot));
+            Console.WriteLine();
+
+            if (top.SequenceEqual(bot))
+            {
+                return center + 1;
+            }
+            
+            return 0;
         }
 
-        for (int i = 3; i < grids.GridFlipped.Count - 3; i += 1)
-        {
-            string gridA1 = grids.GridFlipped[i - 3];
-            string gridB1 = grids.GridFlipped[i - 2];
-            string gridC1 = grids.GridFlipped[i - 1];
-            string gridC2 = grids.GridFlipped[i];
-            string gridB2 = grids.GridFlipped[i + 1];
-            string gridA2 = grids.GridFlipped[i + 2];
-            if (gridA1 == gridA2 && gridB1 == gridB2 && gridC1 == gridC2)
-            {
-                return (i + 1) * 100;
-            }
-        }
-
-        return -1;
     }
 
     private class Grids
