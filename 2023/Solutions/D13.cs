@@ -60,22 +60,6 @@ public class D13
     {
         string input = _client.RetrieveFile();
 
-        input = @"#.##..##.
-..#.##.#.
-##......#
-##......#
-..#.##.#.
-..##..##.
-#.#.##.#.
-
-#...##..#
-#....#..#
-..##..###
-#####.##.
-#####.##.
-..##..###
-#....#..#";
-
         /*input = @"#.##..##.
 ..#.##.#.
 ##......#
@@ -90,85 +74,23 @@ public class D13
 #####.##.
 #####.##.
 ..##..###
-#....#..#
-
-.#.##.#.#
-.##..##..
-.#.##.#..
-#......##
-#......##
-.#.##.#..
-.##..##.#
-
-#..#....#
-###..##..
-.##.#####
-.##.#####
-###..##..
-#..#....#
-#..##...#
-
-#.##..##.
-..#.##.#.
-##..#...#
-##...#..#
-..#.##.#.
-..##..##.
-#.#.##.#.";
-
-        /*input = @"###.##.##
-##.####.#
-##.#..#.#
-####..###
-....##...
-##.#..#.#
-...#..#..
-##..###.#
-##......#
-##......#
-..#.##.#.
-...#..#..
-##.####.#
-....##...
-...####..
-....##...
-##.####.#
-
-.##.##...##...##.
-#####..##..##..##
-.....##..##..##..
-.##.#.#.####.#.#.
-.##...#.#..#.#...
-....#..........#.
-#..#..#......#..#
-....###.....####.
-.##...#.#..#.#...
-.....#..####..#..
-#..#...##..##...#
-....#...#..#...#.
-#..#.##########.#
-#..##...####...##
-#####.##.##.##.##";*/
+#....#..#";*/
 
         List<Pattern> patterns = ConvertInputToList(input);
 
         int sum = 0;
         foreach (Pattern grid in patterns)
         {
-            List<(int Size, int Index)> columns = GetMirrors(grid.Line)
-                .OrderByDescending(x => x.Size)
-                .ToList();
-            List<(int Size, int Index)> rows = GetMirrors(FlipStringList(grid.Line))
-                .OrderByDescending(x => x.Size)
-                .ToList();
+            int columns = GetMirrorsWithSmudge(grid.Line);
+            int rows = GetMirrorsWithSmudge(FlipStringList(grid.Line));
 
-            if (columns.Count > 0)
+            if (columns != -1)
             {
-                sum += columns.First().Index * 100;
+                sum += columns;
             }
-            else if (rows.Count > 0)
+            else if (rows != -1)
             {
-                sum += rows.First().Index;
+                sum += rows;
             }
         }
         Console.WriteLine(sum);
@@ -230,6 +152,53 @@ public class D13
         return mirrors;
     }
 
+    private int GetMirrorsWithSmudge(List<string> pattern)
+    {
+        int currentIndex = FindReflection(pattern, 0);
+
+        for (int i = 0; i < pattern.Count; i++)
+        {
+            char[] line = pattern[i].ToCharArray();
+            for (int j = 0; j < pattern[i].Length; j++)
+            {
+                if (line[j] != '.')
+                {
+                    continue;
+                }
+
+                line[j] = '#';
+                pattern[i] = new string(line);
+
+                int reflectionIndex = FindReflection(pattern, currentIndex);
+                if (reflectionIndex != 0 && reflectionIndex != currentIndex)
+                {
+                    return reflectionIndex;
+                }
+
+                line[j] = '.';
+            }
+            pattern[i] = new string(line);
+        }
+
+        return -1;
+    }
+
+    private int FindReflection(List<string> pattern, int currentIndex)
+    {
+        List<(int Size, int Index)> columns = GetMirrors(pattern)
+            .Select(x => (x.Size, x.Index * 100))
+            .ToList();
+
+        List<(int Size, int Index)> rows = GetMirrors(FlipStringList(pattern))
+            .Select(x => (x.Size, x.Index))
+            .ToList();
+
+        return columns.Concat(rows)
+            .Where(x => x.Index != currentIndex)
+            .OrderByDescending(x => x.Size)
+            .Select(x => x.Index)
+            .FirstOrDefault();
+    }
 
     /// <summary>
     /// #### <
@@ -247,6 +216,11 @@ public class D13
     /// </summary>
     private List<string> FlipStringList(List<string> line)
     {
+        if (line.Count == 0)
+        {
+            return new List<string>();
+        }
+
         List<string> flippedResult = new List<string>();
         for (int i = 0; i < line[0].Length; i++)
         {
