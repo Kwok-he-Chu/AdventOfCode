@@ -100,23 +100,8 @@ O.#..O.#.#
             }
         }
 
-        //array.PrintArray();
+        // TODO: West, East, South... 
 
-        int sum = 0;
-
-        for (int x = 0; x < array.GetLength(0); x++)
-        {
-            int yLength = array.GetLength(1);
-            for (int y = 0; y < yLength; y++)
-            {
-                if (array[x, y] != 'O')
-                {
-                    continue;
-                }
-
-                sum += yLength - y;
-            }
-        };
-
-        Console.WriteLine(sum);
+        Console.WriteLine();
+    }
 }
