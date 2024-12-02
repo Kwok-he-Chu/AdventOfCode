@@ -36,6 +36,22 @@ public static class Extensions
             }
             Console.WriteLine();
         }
+        Console.WriteLine();
+    }
+
+    public static void PrintArray(this char[,] array)
+    {
+        int rowLength = array.GetLength(0);
+        int columnLength = array.GetLength(1);
+        for (int j = 0; j < columnLength; j++)
+        {
+            for (int i = 0; i < rowLength; i++)
+            {
+                Console.Write(array[i, j]);
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();
     }
 
     public static void PrintArray(this int[,] array)
@@ -58,15 +74,6 @@ public static class Extensions
             for (int j = 0; j < columnLength; j++)
                 result[i, j] = int.Parse(list[j][i].ToString());
         return result;
-    }
-
-    public static void PrintArray(this char[,] array)
-    {
-        int rowLength = array.GetLength(0);
-        int columnLength = array.GetLength(1);
-        for (int j = 0; j < columnLength; j++)
-            for (int i = 0; i < rowLength; i++)
-                Console.Write(array[i, j]);
     }
 
     public static char[,] ConvertToCharArray(this string input)
