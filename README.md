@@ -7,5 +7,7 @@ You can find the [2022 solutions](2022/Solutions) here.
 
 You can find the [2023 solutions](2023/Solutions) here.
 
+You can find the [2024 solutions](2024/Solutions) here.
+
 
 For more info, visit the official website of [Advent of Code](https://adventofcode.com/).
