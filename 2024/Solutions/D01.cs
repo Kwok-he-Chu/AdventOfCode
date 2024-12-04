@@ -5,7 +5,7 @@ using System.Linq;
 namespace AOC2024;
 
 /// <summary>
-/// Day 
+/// Day 1: Historian Hysteria
 /// </summary>
 public class D01
 {
