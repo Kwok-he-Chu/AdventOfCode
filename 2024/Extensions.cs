@@ -95,6 +95,27 @@ public static class Extensions
                y <= array.GetUpperBound(1);
     }
 
+    public static bool IsWithinBounds<T>(this T[,] array, (int X, int Y) tuple)
+    {
+        return IsWithinBounds(array, tuple.X, tuple.Y);
+    }
+
+    public static (int X, int Y) FindFirst(this char[,] array, char symbol)
+    {
+        for (int y = 0; y < array.GetLength(1); y++)
+        {
+            for (int x = 0; x < array.GetLength(0); x++)
+            {
+                if (array[x,y] == symbol)
+                {
+                    return (x, y);
+                }
+            }
+        }
+
+        throw new ArgumentException("Could not find symbol: " + symbol);
+    }
+    
     public static IList<T> Swap<T>(this IList<T> list, int indexA, int indexB)
     {
         T temp = list[indexA];

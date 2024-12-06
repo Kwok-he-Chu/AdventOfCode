@@ -7,11 +7,11 @@ public class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("----------------");
+        Console.WriteLine("----------");
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Part One:");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("----------------");
+        Console.WriteLine("----------");
 
         Stopwatch stopwatch = Stopwatch.StartNew();
         new D06().Part1(); // Execute Part 1.
@@ -24,11 +24,11 @@ public class Program
 
         stopwatch.Reset();
 
-        Console.WriteLine("----------------");
+        Console.WriteLine("----------");
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Part Two:");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("----------------");
+        Console.WriteLine("----------");
 
         stopwatch.Start();
         new D06().Part2(); // Execute Part 2.
