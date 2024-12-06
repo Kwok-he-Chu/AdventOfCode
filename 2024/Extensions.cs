@@ -37,7 +37,7 @@ public static class Extensions
             Console.WriteLine();
         }
     }
-
+    
     public static void PrintArray(this int[,] array)
     {
         int rowLength = array.GetLength(0);
@@ -45,6 +45,20 @@ public static class Extensions
         for (int j = 0; j < columnLength; j++)
             for (int i = 0; i < rowLength; i++)
                 Console.Write(array[i, j]);
+    }
+    
+    public static void PrintArray(this char[,] array)
+    {
+        int rowLength = array.GetLength(0);
+        int columnLength = array.GetLength(1);
+        for (int j = 0; j < columnLength; j++)
+        {
+            for (int i = 0; i < rowLength; i++)
+            {
+                Console.Write(array[i, j]);
+            }
+            Console.WriteLine();
+        }
     }
 
     public static int[,] ConvertToIntArray(this string input)
@@ -58,15 +72,6 @@ public static class Extensions
             for (int j = 0; j < columnLength; j++)
                 result[i, j] = int.Parse(list[j][i].ToString());
         return result;
-    }
-
-    public static void PrintArray(this char[,] array)
-    {
-        int rowLength = array.GetLength(0);
-        int columnLength = array.GetLength(1);
-        for (int j = 0; j < columnLength; j++)
-            for (int i = 0; i < rowLength; i++)
-                Console.Write(array[i, j]);
     }
 
     public static char[,] ConvertToCharArray(this string input)
@@ -84,7 +89,10 @@ public static class Extensions
 
     public static bool IsWithinBounds<T>(this T[,] array, int x, int y)
     {
-        return x >= array.GetLowerBound(0) && x <= array.GetUpperBound(0) && y >= array.GetLowerBound(1) && y <= array.GetUpperBound(1);
+        return x >= array.GetLowerBound(0) && 
+               x <= array.GetUpperBound(0) && 
+               y >= array.GetLowerBound(1) && 
+               y <= array.GetUpperBound(1);
     }
 
     public static IList<T> Swap<T>(this IList<T> list, int indexA, int indexB)
