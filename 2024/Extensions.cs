@@ -118,9 +118,7 @@ public static class Extensions
     
     public static IList<T> Swap<T>(this IList<T> list, int indexA, int indexB)
     {
-        T temp = list[indexA];
-        list[indexA] = list[indexB];
-        list[indexB] = temp;
+        (list[indexA], list[indexB]) = (list[indexB], list[indexA]);
         return list;
     }
 
