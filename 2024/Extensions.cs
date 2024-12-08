@@ -60,6 +60,20 @@ public static class Extensions
             Console.WriteLine();
         }
     }
+    
+    public static void PrintArray(this char[,] array, IList<Vector> vectors, char symbol)
+    {
+        var copy = new char[array.GetLength(0), array.GetLength(1)];
+        Array.Copy(array, copy, array.Length);
+
+        foreach (Vector v in vectors)
+        {
+            copy[v.X, v.Y] = symbol;
+        }
+
+        copy.PrintArray();
+    }
+
 
     public static int[,] ConvertToIntArray(this string input)
     {
@@ -98,6 +112,11 @@ public static class Extensions
     public static bool IsWithinBounds<T>(this T[,] array, (int X, int Y) tuple)
     {
         return IsWithinBounds(array, tuple.X, tuple.Y);
+    }
+    
+    public static bool IsWithinBounds<T>(this T[,] array, Vector vector)
+    {
+        return IsWithinBounds(array, vector.X, vector.Y);
     }
 
     public static (int X, int Y) FindFirst(this char[,] array, char symbol)
