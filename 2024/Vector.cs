@@ -12,6 +12,13 @@ public class Vector
         X = x;
         Y = y;
     }
+
+    public Vector((int X, int Y) tuple)
+    {
+        X = tuple.X;
+        Y = tuple.Y;
+    }
+    
     public static Vector operator +(Vector a, Vector b)
     {
         return new Vector(a.X + b.X, a.Y + b.Y);
@@ -65,4 +72,9 @@ public class Vector
     }
 
     public static Vector Zero => new Vector(0, 0);
+    
+    public static Vector North => new Vector(0, -1);
+    public static Vector East => new Vector(1, 0);
+    public static Vector South => new Vector(0, 1);
+    public static Vector West => new Vector(-1, 0);
 }
