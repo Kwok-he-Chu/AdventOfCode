@@ -125,7 +125,7 @@ public static class Extensions
         {
             for (int x = 0; x < array.GetLength(0); x++)
             {
-                if (array[x,y] == symbol)
+                if (array[x, y] == symbol)
                 {
                     return (x, y);
                 }
@@ -134,11 +134,43 @@ public static class Extensions
 
         throw new ArgumentException("Could not find symbol: " + symbol);
     }
-    
+
+    public static List<(int X, int Y)> FindAll(this char[,] array, char symbol)
+    {
+        var result = new List<(int, int)>();
+        for (int y = 0; y < array.GetLength(1); y++)
+        {
+            for (int x = 0; x < array.GetLength(0); x++)
+            {
+                if (array[x, y] == symbol)
+                {
+                    result.Add((x, y));
+                }
+            }
+        }
+
+        return result;
+    }
+
     public static IList<T> Swap<T>(this IList<T> list, int indexA, int indexB)
     {
         (list[indexA], list[indexB]) = (list[indexB], list[indexA]);
         return list;
+    } 
+    
+    public static void Swap<T>(this LinkedListNode<T> a, LinkedListNode<T> b)
+    {
+        if (a == null)
+        {
+            throw new ArgumentNullException();
+        }
+
+        if (b == null)
+        {
+            throw new ArgumentNullException();
+        }
+        
+        (a.Value, b.Value) = (b.Value, a.Value);
     }
 
     public static IEnumerable<T> Splice<T>(this IEnumerable<T> list, int offset, int count)
