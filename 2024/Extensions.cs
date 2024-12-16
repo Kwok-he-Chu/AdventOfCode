@@ -42,20 +42,38 @@ public static class Extensions
     {
         int rowLength = array.GetLength(0);
         int columnLength = array.GetLength(1);
-        for (int j = 0; j < columnLength; j++)
-            for (int i = 0; i < rowLength; i++)
-                Console.Write(array[i, j]);
+        for (int y = 0; y < columnLength; y++)
+            for (int x = 0; x < rowLength; x++)
+                Console.Write(array[x, y]);
     }
     
     public static void PrintArray(this char[,] array)
     {
         int rowLength = array.GetLength(0);
         int columnLength = array.GetLength(1);
-        for (int j = 0; j < columnLength; j++)
+        for (int y = 0; y < columnLength; y++)
         {
-            for (int i = 0; i < rowLength; i++)
+            for (int x = 0; x < rowLength; x++)
             {
-                Console.Write(array[i, j]);
+                Console.Write(array[x, y]);
+            }
+            Console.WriteLine();
+        }
+    }
+    
+    
+    public static void PrintArray(this List<Vector> list, int width, int height)
+    {
+        int rowLength = width;
+        int columnLength = height;
+        for (int y = 0; y < columnLength; y++)
+        {
+            for (int x = 0; x < rowLength; x++)
+            {
+                if (list.Contains(new Vector(x, y)))
+                    Console.Write("#");
+                else
+                    Console.Write(".");
             }
             Console.WriteLine();
         }
@@ -66,9 +84,9 @@ public static class Extensions
         var copy = new char[array.GetLength(0), array.GetLength(1)];
         Array.Copy(array, copy, array.Length);
 
-        foreach (Vector v in vectors)
+        foreach (Vector vec in vectors)
         {
-            copy[v.X, v.Y] = symbol;
+            copy[vec.X, vec.Y] = symbol;
         }
 
         copy.PrintArray();
