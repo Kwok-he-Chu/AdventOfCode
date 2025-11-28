@@ -9,7 +9,7 @@ Find the [2023 solutions](2023/Solutions) here.
 
 Find the [2024 solutions](2024/Solutions) here.
 
-Find the [2024 solutions](2025/Solutions) here.
+Find the [2025 solutions](2025/Solutions) here.
 
 
 For more info, visit the official website of [Advent of Code](https://adventofcode.com/).
