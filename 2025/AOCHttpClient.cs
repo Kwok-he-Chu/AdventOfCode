@@ -12,7 +12,7 @@ public class AOCHttpClient
     private readonly int _year;
     private readonly int _day;
 
-    public AOCHttpClient(int day, int year = 2024)
+    public AOCHttpClient(int day, int year = 2025)
     {
         _day = day;
         _year = year;
