@@ -3,7 +3,7 @@
 namespace AOC2025;
 
 /// <summary>
-/// Day 
+/// Day : 
 /// </summary>
 public class D00
 {
