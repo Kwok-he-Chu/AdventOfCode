@@ -71,10 +71,27 @@ public class Vector
         return $"({X}, {Y})";
     }
 
-    public static Vector Zero => new Vector(0, 0);
+    public static Vector Zero      => new Vector(0, 0);
+    public static Vector North     => new Vector(0, -1);
+    public static Vector Northeast => new Vector(1, -1);
+    public static Vector East      => new Vector(1, 0);
+    public static Vector Southeast => new Vector(1, 1);
+    public static Vector South     => new Vector(0, 1);
+    public static Vector Southwest => new Vector(-1, 1);
+    public static Vector West      => new Vector(-1, 0);
+    public static Vector Northwest => new Vector(-1, -1);
     
-    public static Vector North => new Vector(0, -1);
-    public static Vector East => new Vector(1, 0);
-    public static Vector South => new Vector(0, 1);
-    public static Vector West => new Vector(-1, 0);
+    public static List<Vector> Directions8 =
+    [
+        Vector.Northwest, Vector.North, Vector.Northeast,
+        Vector.West,                     Vector.East,
+        Vector.Southwest, Vector.South, Vector.Southeast
+    ];
+    
+    public static List<Vector> Directions4 =
+    [
+                        Vector.North, 
+        Vector.West,                     Vector.East,
+                        Vector.South,
+    ];
 }
