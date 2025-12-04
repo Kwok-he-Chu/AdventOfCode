@@ -13,7 +13,7 @@ public class Program
         Console.ForegroundColor = ConsoleColor.White;
 
         Stopwatch stopwatch = Stopwatch.StartNew();
-        new D03().Part1(); // Execute Part 1.
+        new D04().Part1(); // Execute Part 1.
         stopwatch.Stop();
 
         Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -28,7 +28,7 @@ public class Program
         Console.ForegroundColor = ConsoleColor.White;
 
         stopwatch.Start();
-        new D03().Part2(); // Execute Part 2.
+        new D04().Part2(); // Execute Part 2.
         stopwatch.Stop();
 
         Console.WriteLine("----------");
