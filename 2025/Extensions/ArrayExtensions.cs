@@ -32,7 +32,7 @@ public static class ArrayExtensions
                 Console.Write(array[x, y]);
     }
     
-    public static void PrintArray(this char[,] array)
+    public static void PrintArray(this char[,] array, bool isFillEmptyStrings = false)
     {
         int rowLength = array.GetLength(0);
         int columnLength = array.GetLength(1);
@@ -40,7 +40,10 @@ public static class ArrayExtensions
         {
             for (int x = 0; x < rowLength; x++)
             {
-                Console.Write(array[x, y]);
+                if (array[x, y] == '\0')
+                    Console.Write('.');
+                else
+                    Console.Write(array[x, y]);
             }
             Console.WriteLine();
         }
