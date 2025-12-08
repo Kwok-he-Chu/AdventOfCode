@@ -31,10 +31,12 @@ public class Vector
 
     public static bool operator ==(Vector a, Vector b)
     {
+        if (ReferenceEquals(a, b)) return true;
         if (ReferenceEquals(a, null) && ReferenceEquals(b, null)) return true;
         if (ReferenceEquals(a, null) || ReferenceEquals(b, null)) return false;
         return a.X == b.X && a.Y == b.Y;
     }
+    
 
     public static bool operator !=(Vector a, Vector b)
     {
@@ -43,13 +45,10 @@ public class Vector
 
     public override bool Equals(object obj)
     {
-        if (obj is Vector other)
-        {
-            return this == other;
-        }
+        if (obj is Vector vector)
+            return X == vector.X && Y == vector.Y;
         return false;
     }
-
     public override int GetHashCode()
     {
         return HashCode.Combine(X, Y);
@@ -73,19 +72,19 @@ public class Vector
 
     public static Vector Zero      => new Vector(0, 0);
     public static Vector North     => new Vector(0, -1);
-    public static Vector Northeast => new Vector(1, -1);
+    public static Vector NorthEast => new Vector(1, -1);
     public static Vector East      => new Vector(1, 0);
-    public static Vector Southeast => new Vector(1, 1);
+    public static Vector SouthEast => new Vector(1, 1);
     public static Vector South     => new Vector(0, 1);
-    public static Vector Southwest => new Vector(-1, 1);
+    public static Vector SouthWest => new Vector(-1, 1);
     public static Vector West      => new Vector(-1, 0);
-    public static Vector Northwest => new Vector(-1, -1);
+    public static Vector NorthWest => new Vector(-1, -1);
     
     public static List<Vector> Directions8 =
     [
-        Vector.Northwest, Vector.North, Vector.Northeast,
+        Vector.NorthWest, Vector.North, Vector.NorthEast,
         Vector.West,                     Vector.East,
-        Vector.Southwest, Vector.South, Vector.Southeast
+        Vector.SouthWest, Vector.South, Vector.SouthEast
     ];
     
     public static List<Vector> Directions4 =
