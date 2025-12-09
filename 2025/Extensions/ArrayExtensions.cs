@@ -75,7 +75,7 @@ public static class ArrayExtensions
         copy.PrintArray();
     }
 
-    public static bool IsWithinBounds<T>(this T[,] array, int x, int y)
+    public static bool IsWithinBounds<T>(this T[,] array, long x, long y)
     {
         return x >= array.GetLowerBound(0) && 
                x <= array.GetUpperBound(0) && 
@@ -83,7 +83,7 @@ public static class ArrayExtensions
                y <= array.GetUpperBound(1);
     }
 
-    public static bool IsWithinBounds<T>(this T[,] array, (int X, int Y) tuple)
+    public static bool IsWithinBounds<T>(this T[,] array, (long X, long Y) tuple)
     {
         return IsWithinBounds(array, tuple.X, tuple.Y);
     }
@@ -143,7 +143,7 @@ public static class ArrayExtensions
                 Console.WriteLine($"Neighbour {neighbourX}, {neighbourY} = {neighbourValue}");
             });
      */
-    public static void ForEachNeighbour4<T>(this T[,] array, Action<int, int, T, int, int, T> action)
+    public static void ForEachNeighbour4<T>(this T[,] array, Action<long, long, T, long, long, T> action)
     {
         int width = array.GetLength(0);
         int height = array.GetLength(1);
@@ -161,7 +161,7 @@ public static class ArrayExtensions
                 Console.WriteLine($"Neighbour {neighbourX}, {neighbourY} = {neighbourValue}");
             });
      */
-    public static void ForEachNeighbour8<T>(this T[,] array, Action<int, int, T, int, int, T> action)
+    public static void ForEachNeighbour8<T>(this T[,] array, Action<long, long, T, long, long, T> action)
     {
         int width = array.GetLength(0);
         int height = array.GetLength(1);

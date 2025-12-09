@@ -4,9 +4,15 @@ namespace AOC2025;
 
 public class Vector
 {
-    public int X { get; }
-    public int Y { get; }
+    public long X { get; }
+    public long Y { get; }
 
+    public Vector(long x, long y)
+    {
+        X = x;
+        Y = y;
+    }
+    
     public Vector(int x, int y)
     {
         X = x;
@@ -14,6 +20,12 @@ public class Vector
     }
 
     public Vector((int X, int Y) tuple)
+    {
+        X = tuple.X;
+        Y = tuple.Y;
+    }
+    
+    public Vector((long X, long Y) tuple)
     {
         X = tuple.X;
         Y = tuple.Y;
@@ -36,7 +48,6 @@ public class Vector
         if (ReferenceEquals(a, null) || ReferenceEquals(b, null)) return false;
         return a.X == b.X && a.Y == b.Y;
     }
-    
 
     public static bool operator !=(Vector a, Vector b)
     {
@@ -93,4 +104,50 @@ public class Vector
         Vector.West,                     Vector.East,
                         Vector.South,
     ];
+
+    public static bool IsVectorInsidePolygon(List<Vector> polygon, Vector point)
+    {
+        bool result = false;
+        int j = polygon.Count - 1;
+        for (int i = 0; i < polygon.Count; i++)
+        {
+            if ((polygon[i].Y > point.Y) != (polygon[j].Y > point.Y) &&
+                (point.X < (polygon[j].X - polygon[i].X) * (point.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) + polygon[i].X))
+            {
+                result = !result;
+            }
+            j = i;
+        }
+        
+        return result;
+    }
+
+    /// <summary>
+    /// Returns a list of vectors from current <see cref="Vector"/> to given vector.
+    /// Example:  (1, 0) -> (4, 0)
+    /// Returns: [(1, 0), (2, 0), (3, 0), (4, 0)] 
+    /// </summary>
+    public List<Vector> GetPathTo(Vector to)
+    {
+        List<Vector> result = new List<Vector>() { this };
+
+        long currentX = this.X;
+        long currentY = this.Y;
+        
+        int stepX = Math.Sign(to.X - this.X);
+        while (currentX != to.X)
+        {
+            result.Add(new Vector(currentX + stepX, currentY));
+            currentX += stepX;
+        }
+        
+        int stepY = Math.Sign(to.Y - this.Y);
+        while (currentY != to.Y)
+        {
+            result.Add(new Vector(currentX, currentY + stepY));
+            currentY += stepY;
+        }
+        
+        return result;
+    }
 }
