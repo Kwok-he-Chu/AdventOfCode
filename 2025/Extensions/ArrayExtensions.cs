@@ -6,15 +6,15 @@ namespace AOC2025;
 
 public static class ArrayExtensions
 {
-    public static void PrintArray(this bool[,] array)
+    public static void PrintArray(this bool[,] grid)
     {
-        int rowLength = array.GetLength(0);
-        int columnLength = array.GetLength(1);
-        for (int j = 0; j < columnLength; j++)
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        for (int y = 0; y < height; y++)
         {
-            for (int i = 0; i < rowLength; i++)
+            for (int x = 0; x < width; x++)
             {
-                if (!array[i, j])
+                if (!grid[x, y])
                     Console.Write('.');
                 else
                     Console.Write('X');
@@ -23,27 +23,27 @@ public static class ArrayExtensions
         }
     }
     
-    public static void PrintArray(this int[,] array)
+    public static void PrintArray(this int[,] grid)
     {
-        int rowLength = array.GetLength(0);
-        int columnLength = array.GetLength(1);
-        for (int y = 0; y < columnLength; y++)
-            for (int x = 0; x < rowLength; x++)
-                Console.Write(array[x, y]);
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+                Console.Write(grid[x, y]);
     }
     
-    public static void PrintArray(this char[,] array, bool isFillEmptyStrings = false)
+    public static void PrintArray(this char[,] grid, bool isFillEmptyStrings = false)
     {
-        int rowLength = array.GetLength(0);
-        int columnLength = array.GetLength(1);
-        for (int y = 0; y < columnLength; y++)
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < rowLength; x++)
+            for (int x = 0; x < width; x++)
             {
-                if (array[x, y] == '\0')
+                if (grid[x, y] == '\0')
                     Console.Write('.');
                 else
-                    Console.Write(array[x, y]);
+                    Console.Write(grid[x, y]);
             }
             Console.WriteLine();
         }
@@ -64,17 +64,72 @@ public static class ArrayExtensions
         }
     }
     
-    public static void PrintArray(this char[,] array, List<Vector> vectors, char symbol)
+    public static void PrintArray(this char[,] grid, List<Vector> vectors, char symbol)
     {
-        char[,] copy = new char[array.GetLength(0), array.GetLength(1)];
-        Array.Copy(array, copy, array.Length);
+        char[,] copy = new char[grid.GetLength(0), grid.GetLength(1)];
+        Array.Copy(grid, copy, grid.Length);
 
         foreach (Vector vec in vectors)
             copy[vec.X, vec.Y] = symbol;
 
         copy.PrintArray();
     }
+    public static char[,] RotateClockwise(char[,] grid)
+    {
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        
+        char[,] result = new char[height, width];
+        
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                result[y, width - 1 - x] = grid[x, y];
+        
+        return result;
+    }
+    
+    public static char[,] RotateCounterClockwise(char[,] grid)
+    {
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        
+        char[,] result = new char[height, width];
+        
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                result[height - 1 - y, x] = grid[x, y];
+        
+        return result;
+    }
 
+    public static char[,] FlipHorizontal(char[,] grid)
+    {
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        
+        char[,] result = new char[width, height];
+        
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                result[x, height - 1 - y] = grid[x, y];
+        
+        return result;
+    }
+    
+    public static char[,] FlipVertical(char[,] grid)
+    {
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        
+        char[,] result = new char[width, height];
+        
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                result[width - 1 - x, y] = grid[x, y];
+        
+        return result;
+    }
+    
     public static bool IsWithinBounds<T>(this T[,] array, long x, long y)
     {
         return x >= array.GetLowerBound(0) && 
@@ -93,13 +148,16 @@ public static class ArrayExtensions
         return IsWithinBounds(array, vector.X, vector.Y);
     }
     
-    public static Vector FindFirst(this char[,] array, char symbol)
+    public static Vector FindFirst(this char[,] grid, char symbol)
     {
-        for (int y = 0; y < array.GetLength(1); y++)
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < array.GetLength(0); x++)
+            for (int x = 0; x < width; x++)
             {
-                if (array[x, y] == symbol)
+                if (grid[x, y] == symbol)
                 {
                     return new Vector(x, y);
                 }
@@ -109,14 +167,17 @@ public static class ArrayExtensions
         throw new ArgumentException("Could not find symbol: " + symbol);
     }
     
-    public static List<Vector> FindAll(this char[,] array, char symbol)
+    public static List<Vector> FindAll(this char[,] grid, char symbol)
     {
-        var result = new List<Vector>();
-        for (int y = 0; y < array.GetLength(1); y++)
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+        
+        List<Vector> result = new List<Vector>();
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < array.GetLength(0); x++)
+            for (int x = 0; x < width; x++)
             {
-                if (array[x, y] == symbol)
+                if (grid[x, y] == symbol)
                 {
                     result.Add(new Vector(x, y));
                 }
@@ -143,15 +204,15 @@ public static class ArrayExtensions
                 Console.WriteLine($"Neighbour {neighbourX}, {neighbourY} = {neighbourValue}");
             });
      */
-    public static void ForEachNeighbour4<T>(this T[,] array, Action<long, long, T, long, long, T> action)
+    public static void ForEachNeighbour4<T>(this T[,] grid, Action<long, long, T, long, long, T> action)
     {
-        int width = array.GetLength(0);
-        int height = array.GetLength(1);
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
 
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
-                foreach (Vector neighbour in Vector.Directions4.Where(neighbour => array.IsWithinBounds(neighbour.X + x, neighbour.Y + y)))
-                    action(x, y, array[x, y], neighbour.X + x, neighbour.Y + y, array[neighbour.X + x, neighbour.Y + y]);
+                foreach (Vector neighbour in Vector.Directions4.Where(neighbour => grid.IsWithinBounds(neighbour.X + x, neighbour.Y + y)))
+                    action(x, y, grid[x, y], neighbour.X + x, neighbour.Y + y, grid[neighbour.X + x, neighbour.Y + y]);
     }
     
     /*
